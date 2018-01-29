@@ -213,7 +213,7 @@ class block_tcgfeed extends block_base {
      * @return boolean
      */
     function has_config() {
-        return false;
+        return true;
     }
 
     /**

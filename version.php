@@ -24,6 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2018012600;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->version   = 2018012903;        // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2016112900;        // Requires this Moodle version
 $plugin->component = 'block_tcgfeed'; // Full name of the plugin (used for diagnostics)
