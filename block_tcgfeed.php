@@ -37,7 +37,7 @@ class block_tcgfeed extends block_base {
         $header[]='User-Agent: Moodle';
 
         $lastfeedread=get_config('block_tcgfeed','feedtimestamp');
-        if(time()-$lastfeedread>600)
+        if(0 and time()-$lastfeedread>600)
         {
             $crl=curl_init();
             curl_setopt($crl, CURLOPT_HTTPHEADER,$header);
@@ -55,6 +55,16 @@ class block_tcgfeed extends block_base {
         $r=(!empty($t) ? $t :unserialize(get_config('block_tcgfeed','feedcache')));
 
         return $r->content;
+    }
+
+    static function buildcontents()
+    {
+        $content='';
+        foreach(static::readfeed()  as $j)
+        {
+            $content.=static::convert_job($j);
+        }
+        return $content;
     }
 
     static function filterfeed()
@@ -148,12 +158,7 @@ class block_tcgfeed extends block_base {
         }
 
         $this->content = new stdClass;
-        $this->content->text = '';
-
-        foreach(static::readfeed()  as $j)
-        {
-            $this->content->text.=static::convert_job($j);
-        }
+        $this->content->text = static::buildcontents();
     }
 
     /**
