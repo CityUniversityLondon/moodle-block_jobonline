@@ -50,13 +50,43 @@ class block_tcgfeed extends block_base {
             {
                 set_config('feedcache',serialize($t),'block_tcgfeed');
                 set_config('feedtimestamp',time(),'block_tcgfeed');
-                print "OK";
             }
         }
         $r=(!empty($t) ? $t :unserialize(get_config('block_tcgfeed','feedcache')));
+
         return $r->content;
     }
-    
+
+    static function filterfeed()
+    {
+        return static::readfeed();
+    }
+
+    /**
+     * Takes a job object and returns html
+     *
+     */
+    static function convert_job($job)
+    {
+        $i=0;
+        $template=file_get_contents(__DIR__.'/job.html');
+        foreach(array('jobid'=>"job$i",
+                      'jobname'=>$job->vacancy->title,
+                      'employername'=>$job->organization->name,
+                      'location'=>$job->vacancy->location[0]->region,
+                      'summary'=>$job->vacancy->summary,
+                      'sector'=>$job->organization->primaryBusinessArea,
+                      'type'=>$job->vacancy->type[0]
+        ) as $field=>$replacement)
+        {
+            $i++;
+            $template=str_replace("<<$field>>",$replacement,$template);
+        }
+
+
+        return $template;
+    }
+
     /**
      * Fake constructor to keep PHP5 happy
      *
@@ -118,8 +148,12 @@ class block_tcgfeed extends block_base {
         }
 
         $this->content = new stdClass;
+        $this->content->text = '';
 
-        $this->content->text = static::readfeed();
+        foreach(static::readfeed()  as $j)
+        {
+            $this->content->text.=static::convert_job($j);
+        }
     }
 
     /**

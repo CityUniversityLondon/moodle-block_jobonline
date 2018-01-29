@@ -1,0 +1,82 @@
+.collapsible .heading
+{
+    color: var(--main);
+    clear:both;
+    margin-top:0px;
+    margin-bottom:0px;
+    padding:0px;
+    margin-left:-1em;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow: ellipsis;
+    font-size: 14pt;
+}
+
+.collapsible
+{
+    border: 0px solid black;
+    padding-top:1ex;
+}
+
+.collapsibleinner
+{
+
+}
+
+.collapsibleinner .imgdiv
+{
+    max-height:9000px; /*Needs to be set to allow shrinking */
+    overflow:hidden;
+    position: relative;
+}
+
+.collapsibleinner .imgdiv:before
+{
+    content: "";
+    display: block;
+    padding-top: 20%; /* The aspect ratio of the image: 100% = 1:1, 50%=2:1 (W:H) etc. */
+}
+
+.collapsibleinner .imgdiv img
+{
+    position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0
+}
+
+.collapsible[state='1'] .heading:before
+{
+    content: '-';
+    margin-left:.5ex;
+    padding-right:.5ex;
+}
+.collapsible[state='0'] .heading:before
+{
+    content: '+';
+    margin-left:.5ex;
+    padding-right:.5ex;
+}
+.collapsible[state='1'] > .collapsibleinner *
+{
+    line-height:1.5em;
+}
+
+.collapsible[state='0'] > .collapsibleinner *
+{
+    opacity:0;
+    padding:0;
+    margin:0;
+    line-height:0;
+    visibility: hidden; /* Prevent clicking on squashed links*/
+    display:none;
+}
+
+.collapsible[state='0'] > .collapsibleinner .imgdiv
+{
+    max-height:0px;
+}
+
+.collapsibleinner *
+{
+    color: black;
+    transition: all .5s ease-out;
+}
