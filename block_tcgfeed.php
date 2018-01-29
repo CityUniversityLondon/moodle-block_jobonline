@@ -60,10 +60,12 @@ class block_tcgfeed extends block_base {
     static function buildcontents()
     {
         $content='';
+        $inner='';
         foreach(static::readfeed()  as $j)
         {
-            $content.=static::convert_job($j);
+            $inner.=static::convert_job($j);
         }
+        $content=include(__DIR__.'/content.html');
         return $content;
     }
 
