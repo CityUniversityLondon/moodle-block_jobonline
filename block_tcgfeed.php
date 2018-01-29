@@ -314,10 +314,13 @@ class block_tcgfeed extends block_base {
      *
      * By default this function simply permits the user to dock the block if it is dockable.
      */
-    function get_required_javascript() {
-        if ($this->instance_can_be_docked() && !$this->hide_header()) {
-            user_preference_allow_ajax_update('docked_block_instance_'.$this->instance->id, PARAM_INT);
-        }
+    function get_required_javascript()
+    {
+        global $PAGE;
+        parent::get_required_javascript();
+
+        $PAGE->requires->js('/blocks/tcgfeed/js/block_tcgfeed.js');
+        $PAGE->requires->js_init_call('M.block_tcgfeed.init');
     }
 
     /**

@@ -1,5 +1,46 @@
 <?php ob_start() ?>
-<div class='tcgblockwrapper'>
+<div id='tcgblockwrapper'>
+    <form>
+  <select onchange='M.block_tcgfeed.setsector(this);'><option "">Any Sector</option>
+      <?php
+    $preset=get_user_preferences('tgcfeed_preferred_sector','');
+foreach(explode('|',get_config('block_tcgfeed','sectorlist')) as $sector)
+{
+    print "<option value='$sector'";
+    if($sector===$preset)
+        print " selected";
+    print ">";
+    print ucfirst($sector);
+    print "</option>\n";
+}
+?>
+  </select>
+  <select><option ''>Any type</option>
+    <?php
+$preset=get_user_preferences('tgcfeed_preferred_type','');
+      foreach(explode('|',get_config('block_tcgfeed','typelist')) as $type)
+      {
+          print "<option value='$type'";
+          if($type===$preset)
+              print " selected";
+          print ">";
+          print ucfirst($type);
+          print "</option>\n";
+      }
+      ?>
+  </select>
+  <div id='tcgfeed_partfullbuttons'>
+          <?php
+$preset=get_user_preferences('tgcfeed_preferred_time','');
+foreach(array(''=>'Any', 'full'=>'Full-time', 'part'=>'Part-time') as $val=>$display)
+{
+    print "<span class='tcg_radiobtn'><input type=radio name='fullpart' value='$val'";
+    if ($val===$preset)
+        print " checked";
+    print ">$display</span>";
+}
+?>
+  </div></form>
   <?=$inner?>
 </div>
 
