@@ -69,3 +69,27 @@ function update_type()
        print "failed";
    }
 }
+
+function update_time()
+{
+   $time=trim(optional_param('time','',PARAM_TEXT));
+   $user=optional_param('user',0,PARAM_INT);
+
+   global $USER,$DB,$SESSION;
+
+   if($user)
+   {
+       $USER=core_user::get_user($user);
+   };
+
+   if($USER
+      and in_array($time,array('','full-time','part-time')))
+   {
+       set_user_preference('tcgfeed_preferred_time',$time,$user);
+       print block_tcgfeed::buildcontents();
+   }
+   else
+   {
+       print "failed";
+   }
+}

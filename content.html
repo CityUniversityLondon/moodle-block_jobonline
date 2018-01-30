@@ -45,7 +45,7 @@ foreach(array(''=>'Any', 'full-time'=>'Full-time', 'part-time'=>'Part-time') as 
     print "<span class='tcg_radiobtn'><input type=radio name='fullpart' value='$val'";
     if ($val===$preset)
         print " checked";
-    print ">$display</span>";
+    print " onchange='M.block_tcgfeed.settime(this,\"$USER->id\");'>$display</span>";
 }
 ?>
   </div></form>

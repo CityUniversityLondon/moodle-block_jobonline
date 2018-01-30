@@ -45,6 +45,12 @@ M.block_tcgfeed =
                          ['user='+user,'type='+obj.value].join('&'));
         },
 
+        settime: function(obj,user)
+        {
+            this.setitem(document.getElementById('tcgblockwrapper'),'update_time',
+                         ['user='+user,'time='+obj.value].join('&'));
+        },
+
         test: function(object,text)
         {
             object.innerHTML='AAAA'+text;
