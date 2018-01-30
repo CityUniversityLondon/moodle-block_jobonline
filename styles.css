@@ -2,12 +2,7 @@
 {
     width: 100%;
     text-overflow: ellipsis;
- }
-
-#tcgblockwrapper h1
-{
-font-size: 100%;
- }
+}
 
 #tcgblockwrapper .collapsible .heading
 {
@@ -16,11 +11,20 @@ font-size: 100%;
     margin-top:0px;
     margin-bottom:0px;
     padding:0px;
-    margin-left:-1em;
     overflow:hidden;
     white-space:nowrap;
     text-overflow: ellipsis;
+    margin-left:-.5rem;
+}
+
+#tcgblockwrapper h1
+{
     font-size: 14pt;
+}
+
+#tcgblockwrapper h2
+{
+    font-size: 90%;
 }
 
 #tcgblockwrapper .collapsible
@@ -56,13 +60,13 @@ font-size: 100%;
 
 #tcgblockwrapper .collapsible[state='1'] .heading:before
 {
-    content: '-';
+    content: '➖';
     margin-left:.5ex;
     padding-right:.5ex;
 }
 #tcgblockwrapper .collapsible[state='0'] .heading:before
 {
-    content: '+';
+    content: '➕';
     margin-left:.5ex;
     padding-right:.5ex;
 }

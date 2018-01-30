@@ -3,9 +3,12 @@
   <div class='collapsibleinner' onClick="event.cancelBubble=true; event.stopPropagation=true;">
     <div class='employername'><<employername>></div>
     <div class='location'><<location>></div>
-    <div class='summary'>
-      <div class='summarytext' >
-        <<summary>>
+    <div class='collapsible' state="1" onClick="this.getAttributeNode('state').value^=1">
+      <h2 class='heading'>Summary</h2>
+      <div class='summary collapsibleinner' onClick="event.cancelBubble=true; event.stopPropagation=true;">
+        <div class='summarytext' >
+          <<summary>>
+        </div>
       </div>
     </div>
     </div>
