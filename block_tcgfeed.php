@@ -63,9 +63,17 @@ class block_tcgfeed extends block_base {
     {
         $content='';
         $inner='';
-        foreach(static::filterfeed()  as $j)
+        $maxjobs=(int)get_config('block_tcgfeed','listsize');
+
+        $i=0;
+        foreach(static::filterfeed() as $j)
         {
             $inner.=static::convert_job($j);
+            $i++;
+            if($i===$maxjobs)
+            {
+                break;
+            }
         }
         $content=include(__DIR__.'/content.html');
         return $content;

@@ -20,3 +20,6 @@ $string['sectorlist_description']="List of business areas which can be selected 
 
 $string['typelist']='List of opportunity types';
 $string['typelist_description']="List of opportunity types which can be selected in the block's filter. Each option should be delimited by a | character.";
+
+$string['listsize']='Maximum number of jobs';
+$string['listsize_description']='The maximum number of jobs to show in the block. 0 means to show all matching jobs (not recommended).';
