@@ -4,10 +4,11 @@ global $USER;
 <div id='tcgblockwrapper'>
     <form>
 
-  <select onchange='M.block_tcgfeed.setsector(this,"<?= $_SESSION['USER']->sesskey ?>","<?= $USER->id?>");'><option "">Any Sector</option>
+  <select onchange='M.block_tcgfeed.setsector(this,"<?= $USER->id?>");'>
+    <option value="">Any Sector</option>
     <?php
          
-    $preset=get_user_preferences('tcgfeed_preferred_sector','');
+$preset=get_user_preferences('tcgfeed_preferred_sector','');
 
 foreach(explode('|',get_config('block_tcgfeed','sectorlist')) as $sector)
 {
@@ -21,9 +22,10 @@ foreach(explode('|',get_config('block_tcgfeed','sectorlist')) as $sector)
 }
 ?>
   </select>
-  <select><option ''>Any type</option>
+  <select onchange='M.block_tcgfeed.settype(this,"<?= $USER->id?>");'>
+    <option value=''>Any type</option>
     <?php
-$preset=get_user_preferences('tgcfeed_preferred_type','');
+$preset=get_user_preferences('tcgfeed_preferred_type','');
       foreach(explode('|',get_config('block_tcgfeed','typelist')) as $type)
       {
           print "<option value='$type'";
@@ -37,7 +39,7 @@ $preset=get_user_preferences('tgcfeed_preferred_type','');
   </select>
   <div id='tcgfeed_partfullbuttons'>
           <?php
-$preset=get_user_preferences('tgcfeed_preferred_time','');
+$preset=get_user_preferences('tcgfeed_preferred_time','');
 foreach(array(''=>'Any', 'full'=>'Full-time', 'part'=>'Part-time') as $val=>$display)
 {
     print "<span class='tcg_radiobtn'><input type=radio name='fullpart' value='$val'";
