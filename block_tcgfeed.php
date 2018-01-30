@@ -21,6 +21,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  */
 
+require_once(__DIR__."/../moodleblock.class.php");
+
 class block_tcgfeed extends block_base {
 
     /// Class Functions
@@ -61,7 +63,7 @@ class block_tcgfeed extends block_base {
     {
         $content='';
         $inner='';
-        foreach(static::readfeed()  as $j)
+        foreach(static::filterfeed()  as $j)
         {
             $inner.=static::convert_job($j);
         }
@@ -71,7 +73,25 @@ class block_tcgfeed extends block_base {
 
     static function filterfeed()
     {
-        return static::readfeed();
+        $temp = static::readfeed();
+        if($sector=get_user_preferences('tcgfeed_preferred_sector'))
+        {
+            $temp=array_filter($temp,
+                               function  ($a) use($sector)
+                               {
+                                   foreach($a->vacancy->occupationalArea as $area)
+                                   {
+                                       if(strtolower($area)==$sector)
+                                       {
+                                           return true;
+                                       }
+                                   }
+                                   return false;
+                               }
+            );
+        }
+        return $temp;
+
     }
 
     /**

@@ -1,16 +1,22 @@
-<?php ob_start() ?>
+<?php ob_start();
+global $USER;
+?>
 <div id='tcgblockwrapper'>
     <form>
-  <select onchange='M.block_tcgfeed.setsector(this);'><option "">Any Sector</option>
-      <?php
-    $preset=get_user_preferences('tgcfeed_preferred_sector','');
+
+  <select onchange='M.block_tcgfeed.setsector(this,"<?= $_SESSION['USER']->sesskey ?>","<?= $USER->id?>");'><option "">Any Sector</option>
+    <?php
+         
+    $preset=get_user_preferences('tcgfeed_preferred_sector','');
+
 foreach(explode('|',get_config('block_tcgfeed','sectorlist')) as $sector)
 {
-    print "<option value='$sector'";
-    if($sector===$preset)
+    $s=trim($sector);
+    print "<option value='$s'";
+    if($s===$preset)
         print " selected";
     print ">";
-    print ucfirst($sector);
+    print ucfirst($s);
     print "</option>\n";
 }
 ?>
