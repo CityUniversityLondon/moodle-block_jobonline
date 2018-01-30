@@ -90,6 +90,41 @@ class block_tcgfeed extends block_base {
                                }
             );
         }
+
+        if($type=trim(get_user_preferences('tcgfeed_preferred_type')))
+        {
+            $temp=array_filter($temp,
+                               function ($a) use($type)
+                               {
+                                   foreach($a->vacancy->type as $atype)
+                                   {
+                                       if(strtolower(trim($atype))==$type)
+                                       {
+                                           return true;
+                                       }
+                                   }
+                                   return false;
+                               }
+            );
+        }
+
+        if($time=trim(get_user_preferences('tcgfeed_preferred_time')))
+        {
+            $temp=array_filter($temp,
+                               function ($a) use($time)
+                               {
+                                   foreach($a->vacancy->type as $atime)
+                                   {
+                                       if(strtolower(trim($atime))==$time)
+                                       {
+                                           return true;
+                                       }
+                                   }
+                                   return false;
+                               }
+            );
+        }
+
         return $temp;
     }
 
