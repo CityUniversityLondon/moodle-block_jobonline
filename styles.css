@@ -1,4 +1,15 @@
-.collapsible .heading
+#tcgblockwrapper select
+{
+    width: 100%;
+    text-overflow: ellipsis;
+ }
+
+#tcgblockwrapper h1
+{
+font-size: 100%;
+ }
+
+#tcgblockwrapper .collapsible .heading
 {
     color: var(--main);
     clear:both;
@@ -12,55 +23,55 @@
     font-size: 14pt;
 }
 
-.collapsible
+#tcgblockwrapper .collapsible
 {
     border: 0px solid black;
     padding-top:1ex;
 }
 
-.collapsibleinner
+#tcgblockwrapper .collapsibleinner
 {
 
 }
 
-.collapsibleinner .imgdiv
+#tcgblockwrapper .collapsibleinner .imgdiv
 {
     max-height:9000px; /*Needs to be set to allow shrinking */
     overflow:hidden;
     position: relative;
 }
 
-.collapsibleinner .imgdiv:before
+#tcgblockwrapper .collapsibleinner .imgdiv:before
 {
     content: "";
     display: block;
     padding-top: 20%; /* The aspect ratio of the image: 100% = 1:1, 50%=2:1 (W:H) etc. */
 }
 
-.collapsibleinner .imgdiv img
+#tcgblockwrapper .collapsibleinner .imgdiv img
 {
     position: absolute;
     top: 0; bottom: 0; left: 0; right: 0
 }
 
-.collapsible[state='1'] .heading:before
+#tcgblockwrapper .collapsible[state='1'] .heading:before
 {
     content: '-';
     margin-left:.5ex;
     padding-right:.5ex;
 }
-.collapsible[state='0'] .heading:before
+#tcgblockwrapper .collapsible[state='0'] .heading:before
 {
     content: '+';
     margin-left:.5ex;
     padding-right:.5ex;
 }
-.collapsible[state='1'] > .collapsibleinner *
+#tcgblockwrapper .collapsible[state='1'] > .collapsibleinner *
 {
     line-height:1.5em;
 }
 
-.collapsible[state='0'] > .collapsibleinner *
+#tcgblockwrapper .collapsible[state='0'] > .collapsibleinner *
 {
     opacity:0;
     padding:0;
@@ -70,13 +81,12 @@
     display:none;
 }
 
-.collapsible[state='0'] > .collapsibleinner .imgdiv
+#tcgblockwrapper .collapsible[state='0'] > .collapsibleinner .imgdiv
 {
     max-height:0px;
 }
 
-.collapsibleinner *
+#tcgblockwrapper .collapsibleinner *
 {
     color: black;
-    transition: all .5s ease-out;
 }
