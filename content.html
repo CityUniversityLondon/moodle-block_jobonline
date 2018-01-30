@@ -40,7 +40,7 @@ $preset=get_user_preferences('tcgfeed_preferred_type','');
   <div id='tcgfeed_partfullbuttons'>
           <?php
 $preset=get_user_preferences('tcgfeed_preferred_time','');
-foreach(array(''=>'Any', 'full'=>'Full-time', 'part'=>'Part-time') as $val=>$display)
+foreach(array(''=>'Any', 'full-time'=>'Full-time', 'part-time'=>'Part-time') as $val=>$display)
 {
     print "<span class='tcg_radiobtn'><input type=radio name='fullpart' value='$val'";
     if ($val===$preset)
