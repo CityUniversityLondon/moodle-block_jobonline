@@ -74,14 +74,14 @@ class block_tcgfeed extends block_base {
     static function filterfeed()
     {
         $temp = static::readfeed();
-        if($sector=get_user_preferences('tcgfeed_preferred_sector'))
+        if($sector=trim(get_user_preferences('tcgfeed_preferred_sector')))
         {
             $temp=array_filter($temp,
-                               function  ($a) use($sector)
+                               function ($a) use($sector)
                                {
                                    foreach($a->vacancy->occupationalArea as $area)
                                    {
-                                       if(strtolower($area)==$sector)
+                                       if(strtolower(trim($area))==$sector)
                                        {
                                            return true;
                                        }
@@ -91,7 +91,6 @@ class block_tcgfeed extends block_base {
             );
         }
         return $temp;
-
     }
 
     /**
