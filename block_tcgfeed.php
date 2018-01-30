@@ -33,18 +33,26 @@ class block_tcgfeed extends block_base {
      */
     static function readfeed()
     {
+        $password=get_config('block_tcgfeed','feedpassword');
+        $url=get_config('block_tcgfeed','feedurl');
+
+        if(empty($password) or empty($url))
+        {
+            return array();
+        }
+
         $header=array();
         $header[]='Accept: application/json';
-        $header[]='Authorization: Basic c2NyX3N5bmRpY2F0aW9uX2RhdGFfbHNodG06eWU5Wmt9NDZKUClXKFowWW5PcXA=';
+        $header[]='Authorization: Basic '.base64_encode($password);
         $header[]='User-Agent: Moodle';
 
         $lastfeedread=get_config('block_tcgfeed','feedtimestamp');
-        if(0 and time()-$lastfeedread>600)
+        if(time()-$lastfeedread>600)
         {
             $crl=curl_init();
             curl_setopt($crl, CURLOPT_HTTPHEADER,$header);
             curl_setopt($crl, CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($crl, CURLOPT_URL, 'https://link-vacancies-test.targetconnect.net/london/vacancy/london-school-hygene-tropical-medicine');
+            curl_setopt($crl, CURLOPT_URL, $url);
             $rawcontent = trim(curl_exec($crl));
             curl_close($crl);
             $t=json_decode($rawcontent);
@@ -75,13 +83,27 @@ class block_tcgfeed extends block_base {
                 break;
             }
         }
+
         $content=include(__DIR__.'/content.html');
         return $content;
     }
 
+    protected static function basic_filtering($jobs)
+    {
+        $today=date('c');
+        $jobs=array_filter($jobs,
+                           function ($a) use($today)
+                           {
+                               return ($a->posting->publishDate < $today and
+                                       $a->posting->unpublishDate > $today);
+                           }
+        );
+        return $jobs;
+    }
+
     static function filterfeed()
     {
-        $temp = static::readfeed();
+        $temp = static::basic_filtering(static::readfeed());
         if($sector=trim(get_user_preferences('tcgfeed_preferred_sector')))
         {
             $temp=array_filter($temp,
@@ -133,6 +155,7 @@ class block_tcgfeed extends block_base {
             );
         }
 
+        usort($temp,function($a,$b){return $a->vacancy->closingDate > $b->vacancy->closingDate;});
         return $temp;
     }
 
