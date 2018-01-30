@@ -2,35 +2,47 @@ M.block_tcgfeed =
     {
         init: function()
         {
-            console.log('hello');
+            console.log('block_tcgfeed js loaded');
             return true;
+        },
+
+        updateitem: function(obj,contents)
+        {
+            if(typeof contents !== 'undefined'  && contents !== 'failed')
+            {
+                obj.innerHTML=contents;
+            }
         },
 
         // params is an array
         setitem: function(obj,func,params)
         {
-            console.log(obj);
-            r=this.getstuff(func,params);
-            if(typeof r !== 'undefined'  && r !== 'failed')
-            {
-                obj.innerHTML=r;
-            }
-        },
-
-        getstuff: function(func,params)
-        {
             var r=new XMLHttpRequest;
+            r.onload = function (e) {
+                if (r.readyState === 4)
+                {
+                    if (r.status === 200)
+                    {
+                        M.block_tcgfeed.updateitem(obj,r.responseText);
+                    }
+                }
+            }
+
             console.log('blocks/tcgfeed/brain.php?fn='+func+'&'+encodeURI(params));
-            r.open('GET','/blocks/tcgfeed/brain.php?fn='+func+'&'+encodeURI(params),true);
+            r.open('GET','/blocks/tcgfeed/brain.php?fn='+func+'&'+encodeURI(params));
             r.send(null);
-            return r.responseText;
         },
 
-        setsector: function(obj,session,user)
+        setsector: function(obj,user)
         {
             this.setitem(document.getElementById('tcgblockwrapper'),'update_sector',
-                         ['session='+session,'user='+user,'sector='+obj.value].join('&'));
-            console.log(obj.value);
+                         ['user='+user,'sector='+obj.value].join('&'));
+        },
+
+        settype: function(obj,user)
+        {
+            this.setitem(document.getElementById('tcgblockwrapper'),'update_type',
+                         ['user='+user,'type='+obj.value].join('&'));
         },
 
         test: function(object,text)
