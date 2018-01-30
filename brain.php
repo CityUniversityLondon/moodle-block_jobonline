@@ -23,7 +23,31 @@ else
 function update_sector()
 {
    $sector=optional_param('sector','',PARAM_TEXT);
-   $session=optional_param('session','',PARAM_RAW_TRIMMED);
+   $user=optional_param('user',0,PARAM_INT);
+
+   global $USER,$DB;
+
+   if($user)
+   {
+       $USER=core_user::get_user($user);
+   };
+
+   if($USER
+      and ($sector===''
+           or strpos(get_config('block_tcgfeed','sectorlist'),"$sector") !== FALSE))
+   {
+       set_user_preference('tcgfeed_preferred_sector',$sector,$user);
+       print block_tcgfeed::buildcontents();
+   }
+   else
+   {
+       print "failed";
+   }
+}
+
+function update_type()
+{
+   $type=trim(optional_param('type','',PARAM_TEXT));
    $user=optional_param('user',0,PARAM_INT);
 
    global $USER,$DB,$SESSION;
@@ -34,9 +58,10 @@ function update_sector()
    };
 
    if($USER
-      and strpos(get_config('block_tcgfeed','sectorlist'),"$sector")!==FALSE)
+      and ($type==='' or
+           strpos(get_config('block_tcgfeed','typelist'),$type) !== FALSE))
    {
-       set_user_preference('tcgfeed_preferred_sector',$sector,$user);
+       set_user_preference('tcgfeed_preferred_type',$type,$user);
        print block_tcgfeed::buildcontents();
    }
    else
