@@ -104,7 +104,7 @@ class block_tcgfeed extends block_base {
     static function filterfeed()
     {
         $temp = static::basic_filtering(static::readfeed());
-        if($sector=trim(get_user_preferences('tcgfeed_preferred_sector')))
+        if($sector=strtolower(trim(get_user_preferences('tcgfeed_preferred_sector'))))
         {
             $temp=array_filter($temp,
                                function ($a) use($sector)
@@ -121,7 +121,7 @@ class block_tcgfeed extends block_base {
             );
         }
 
-        if($type=trim(get_user_preferences('tcgfeed_preferred_type')))
+        if($type=strtolower(trim(get_user_preferences('tcgfeed_preferred_type'))))
         {
             $temp=array_filter($temp,
                                function ($a) use($type)
@@ -138,7 +138,7 @@ class block_tcgfeed extends block_base {
             );
         }
 
-        if($time=trim(get_user_preferences('tcgfeed_preferred_time')))
+        if($time=strtolower(trim(get_user_preferences('tcgfeed_preferred_time'))))
         {
             $temp=array_filter($temp,
                                function ($a) use($time)
