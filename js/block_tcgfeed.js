@@ -49,6 +49,7 @@ M.block_tcgfeed =
         // params is an array
         setitem: function(obj,func,params)
         {
+            obj.style.filter='blur(1px)';
             var r=new XMLHttpRequest;
             r.onload = function (e) {
                 if (r.readyState === 4)
@@ -56,6 +57,7 @@ M.block_tcgfeed =
                     if (r.status === 200)
                     {
                         M.block_tcgfeed.updateitem(obj,r.responseText);
+                        obj.style.filter='blur(0px)';
                     }
                 }
             }
