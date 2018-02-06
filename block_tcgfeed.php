@@ -31,7 +31,7 @@ class block_tcgfeed extends block_base {
       return array of job opportunities from feed.
       Caches feed for 10minutes
      */
-    static function readfeed()
+    static function readfeed($check=false)
     {
         $password=get_config('block_tcgfeed','feedpassword');
         $url=get_config('block_tcgfeed','feedurl');
@@ -47,34 +47,37 @@ class block_tcgfeed extends block_base {
         $header[]='User-Agent: Moodle';
 
         $lastfeedread=get_config('block_tcgfeed','feedtimestamp');
-        if(time()-$lastfeedread>600)
+        if($check and time()-$lastfeedread>600)
         {
             $crl=curl_init();
             curl_setopt($crl, CURLOPT_HTTPHEADER,$header);
             curl_setopt($crl, CURLOPT_RETURNTRANSFER,true);
             curl_setopt($crl, CURLOPT_URL, $url);
+            curl_setopt($crl, CURLOPT_CONNECTTIMEOUT, 2);
             $rawcontent = trim(curl_exec($crl));
-            curl_close($crl);
             $t=json_decode($rawcontent);
-            if($t and json_last_error() === JSON_ERROR_NONE)
+            if(!curl_errno($crl) and $t and json_last_error() === JSON_ERROR_NONE)
             {
                 set_config('feedcache',serialize($t),'block_tcgfeed');
                 set_config('feedtimestamp',time(),'block_tcgfeed');
             }
+            else
+            {
+                $t=array();
+            }
         }
         $r=(!empty($t) ? $t :unserialize(get_config('block_tcgfeed','feedcache')));
-
         return $r->content;
     }
 
-    static function buildcontents()
+    static function buildcontents($check=false)
     {
         $content='';
         $inner='';
         $maxjobs=(int)get_config('block_tcgfeed','listsize');
 
         $i=0;
-        foreach(static::filterfeed() as $j)
+        foreach(static::filterfeed($check) as $j)
         {
             $inner.=static::convert_job($j);
             $i++;
@@ -101,9 +104,9 @@ class block_tcgfeed extends block_base {
         return $jobs;
     }
 
-    static function filterfeed()
+    static function filterfeed($check=false)
     {
-        $temp = static::basic_filtering(static::readfeed());
+        $temp = static::basic_filtering(static::readfeed($check));
         if($sector=strtolower(trim(get_user_preferences('tcgfeed_preferred_sector'))))
         {
             $temp=array_filter($temp,

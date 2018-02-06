@@ -37,7 +37,7 @@ function update_sector()
            or strpos(get_config('block_tcgfeed','sectorlist'),"$sector") !== FALSE))
    {
        set_user_preference('tcgfeed_preferred_sector',$sector,$user);
-       print block_tcgfeed::buildcontents();
+       print block_tcgfeed::buildcontents(true);
    }
    else
    {
@@ -62,7 +62,7 @@ function update_type()
            strpos(get_config('block_tcgfeed','typelist'),$type) !== FALSE))
    {
        set_user_preference('tcgfeed_preferred_type',$type,$user);
-       print block_tcgfeed::buildcontents();
+       print block_tcgfeed::buildcontents(true);
    }
    else
    {
@@ -86,7 +86,7 @@ function update_time()
       and in_array($time,array('','full-time','part-time')))
    {
        set_user_preference('tcgfeed_preferred_time',$time,$user);
-       print block_tcgfeed::buildcontents();
+       print block_tcgfeed::buildcontents(true);
    }
    else
    {
