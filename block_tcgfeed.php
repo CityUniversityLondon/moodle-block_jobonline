@@ -177,7 +177,14 @@ class block_tcgfeed extends block_base {
         ) as $field=>$replacement)
         {
             $i++;
-            $template=str_replace("<<$field>>",$replacement,$template);
+            $template=str_replace("<<$field>>",
+                                  strip_tags(
+                                      htmlspecialchars_decode(
+                                          htmlentities(
+                                              html_entity_decode($replacement)
+                                              ,ENT_QUOTES,'UTF-8',false)),
+                                      '<b><i><i><em><strong><p><h1><h2><h3><h4><h5><h6><br><div><ul><ol><li>'),
+            $template);
         }
 
 
