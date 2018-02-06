@@ -2,8 +2,40 @@ M.block_tcgfeed =
     {
         init: function()
         {
-            console.log('block_tcgfeed js loaded');
+            this.lockdown(document.getElementById('tcgblockwrapper'));
+            console.log('block_tcgfeed js loaded and locked');
             return true;
+        },
+
+        // Strip out any embedded styles in the feed
+        lockdown: function(node)
+        {
+            // Node type 1 is an element.
+            if(node.nodeType===1)
+            {
+                node.removeAttribute('style');
+            }
+            node=node.firstChild;
+            while(node)
+            {
+                this.lockdown(node);
+                node=node.nextSibling;
+            }
+        },
+
+        close_collapsible: function(me,event)
+        {
+            if(!event.ctrlKey)
+            {
+                var temp=me.getAttributeNode('state').value;
+                var elements=document.getElementsByClassName('tcgfeed_job');
+                console.log(elements);
+                for(i=0;i<elements.length;i++)
+                {
+                    elements[i].getAttributeNode('state').value=0;
+                }
+                me.getAttributeNode('state').value=temp;
+            }
         },
 
         updateitem: function(obj,contents)
