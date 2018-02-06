@@ -1,36 +1,79 @@
+#tcgblockwrapper .tcgfeed_job
+{
+    padding: 1ex 1em;
+    margin:0 0 .5ex 0;
+}
+
+#tcgblockwrapper h1
+{
+    font-size: .9rem;
+    padding:0;
+    margin:0;
+}
+
+#tcgblockwrapper h1,
+#tcgblockwrapper h2,
+#tcgblockwrapper h3,
+#tcgblockwrapper h4,
+#tcgblockwrapper h5,
+#tcgblockwrapper h6
+{
+    line-height: 1.2rem;
+}
+
+#tcgblockwrapper .tcgfeed_job > h1
+{
+    margin-top:0px;
+}
+
+#tcgblockwrapper .tcgfeed_job h2,
+#tcgblockwrapper .tcgfeed_job h3,
+#tcgblockwrapper .tcgfeed_job h4,
+#tcgblockwrapper .tcgfeed_job h5,
+#tcgblockwrapper .tcgfeed_job h6
+{
+    font-size: 90%;
+    line-height: 90%;
+    margin-top: 1.5ex;
+}
+
 #tcgblockwrapper select
 {
     width: 100%;
     text-overflow: ellipsis;
 }
 
-#tcgblockwrapper .collapsible .heading
+#tcgblockwrapper > .collapsible[state="0"]
 {
-    color: var(--main);
+    border: thin solid grey;
+}
+
+#tcgblockwrapper > .collapsible[state="1"]
+{
+    border: thin solid black;
+}
+
+#tcgblockwrapper > .collapsible[state="1"] > h1
+{
+    padding-bottom:1ex;
+}
+
+
+#tcgblockwrapper .collapsible[state="0"] .heading
+{
     clear:both;
-    margin-top:0px;
-    margin-bottom:0px;
-    padding:0px;
     overflow:hidden;
     white-space:nowrap;
     text-overflow: ellipsis;
-    margin-left:-.5rem;
 }
 
-#tcgblockwrapper h1
+#tcgblockwrapper .collapsible[state="1"] .heading
 {
-    font-size: 14pt;
-}
-
-#tcgblockwrapper h2
-{
-    font-size: 90%;
+    clear:both;
 }
 
 #tcgblockwrapper .collapsible
 {
-    border: 0px solid black;
-    padding-top:1ex;
 }
 
 #tcgblockwrapper .collapsibleinner
@@ -61,13 +104,11 @@
 #tcgblockwrapper .collapsible[state='1'] .heading:before
 {
     content: '➖';
-    margin-left:.5ex;
     padding-right:.5ex;
 }
 #tcgblockwrapper .collapsible[state='0'] .heading:before
 {
     content: '➕';
-    margin-left:.5ex;
     padding-right:.5ex;
 }
 #tcgblockwrapper .collapsible[state='1'] > .collapsibleinner *
