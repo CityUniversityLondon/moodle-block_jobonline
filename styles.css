@@ -4,6 +4,11 @@
     margin:0 0 .5ex 0;
 }
 
+#tcgblockwrapper .label
+{
+    margin-right: 1em;
+}
+
 #tcgblockwrapper h1
 {
     font-size: .9rem;
@@ -70,6 +75,25 @@
 #tcgblockwrapper .collapsible[state="1"] .heading
 {
     clear:both;
+}
+
+#tcgblockwrapper .salaryrange .note
+{
+    padding-left:.25em;
+}
+#tcgblockwrapper .salaryrange .note[state='0'] span
+{
+    display:none;
+}
+
+#tcgblockwrapper .salaryrange .note[state='1']:before
+{
+    content:'➖ ';
+}
+
+#tcgblockwrapper .salaryrange .note[state='0']:before
+{
+    content:'🛈';
 }
 
 #tcgblockwrapper .collapsible

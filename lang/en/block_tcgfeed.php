@@ -26,3 +26,8 @@ $string['typelist_description']="List of opportunity types which can be selected
 
 $string['listsize']='Maximum number of jobs';
 $string['listsize_description']='The maximum number of jobs to show in the block. 0 means to show all matching jobs (not recommended).';
+
+$string['employername_label']='Employer:';
+$string['closingdate_label']='Closing Date:';
+$string['application_label']='Application to:';
+$string['applicationlinkname']='Click here to apply (opens new window)';

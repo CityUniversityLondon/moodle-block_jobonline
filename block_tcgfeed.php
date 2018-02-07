@@ -25,6 +25,8 @@ require_once(__DIR__."/../moodleblock.class.php");
 
 class block_tcgfeed extends block_base {
 
+    static $stringmanager=null;
+
     /// Class Functions
 
     /*
@@ -72,6 +74,8 @@ class block_tcgfeed extends block_base {
 
     static function buildcontents($check=false)
     {
+        static::$stringmanager=get_string_manager();
+
         $content='';
         $inner='';
         $maxjobs=(int)get_config('block_tcgfeed','listsize');
@@ -170,16 +174,71 @@ class block_tcgfeed extends block_base {
     {
         $i=0;
         $template=file_get_contents(__DIR__.'/job.html');
+        $d=DateTime::createFromFormat('Y-m-d\TH:i:s+',$job->vacancy->closingDate);
+
         foreach(array('jobid'=>"job$i",
                       'jobname'=>$job->vacancy->title,
                       'employername'=>$job->organization->name,
                       'location'=>$job->vacancy->location[0]->region,
                       'summary'=>$job->vacancy->summary,
                       'sector'=>$job->organization->primaryBusinessArea,
-                      'type'=>$job->vacancy->type[0]
+                      'type'=>$job->vacancy->type[0],
+                      'size'=>$job->organization->sizeOfOrganisation,
+                      'closingdate'=>date('d/m/Y H:i (e)',$d->getTimestamp()),
         ) as $field=>$replacement)
         {
             $i++;
+            $template=static::updatetempplate($template,$field,$replacement);
+        }
+
+        if(!empty($job->vacancy->applicationEmail))
+        {
+            $application="<a href='mailto:{$job->vacancy->applicationEmail}'>{$job->vacancy->applicationEmail}</a>";
+        }
+        elseif(!empty($job->vacancy->applicationUrl) and !empty($job->vacancy->applicationUrl->link))
+        {
+            $applicationlinkname=static::$stringmanager->get_string('applicationlinkname','block_tcgfeed');
+            $applicationlink=$job->vacancy->applicationUrl->link;
+            $application="<a href='$applicationlink' target=_top>$applicationlinkname</a>";
+        }
+        else
+        {
+            $application='';
+        }
+
+        $template=static::updatetempplate($template,'application',$application,true);
+
+        $s=$job->vacancy->salaryBand[0];
+        if(!empty($job->vacancy->salaryNotes))
+        {
+            $s="$s<span class='note' state='0' onclick=\"this.getAttributeNode('state').value^=1\"><span>{$job->vacancy->salaryNotes}</span></span>";
+        }
+
+        $template=static::updatetempplate($template,'salary',$s,true);
+
+
+        return $template;
+    }
+
+    static function updatetempplate($template,$field,$replacement,$safe=false)
+    {
+        if(empty($replacement))
+        {
+            $replacement='Not given';
+        }
+
+        $label=static::$stringmanager->string_exists("${field}_label",'block_tcgfeed')?
+              get_string("${field}_label",'block_tcgfeed'):
+              ucfirst("$field:");
+
+        $template=str_replace("<<${field}_label>>",$label,$template);
+
+        if($safe)
+        {
+            $template=str_replace("<<{$field}>>",$replacement,$template);
+        }
+        else
+        {
             $template=str_replace("<<$field>>",
                                   strip_tags(
                                       htmlspecialchars_decode(
@@ -187,9 +246,8 @@ class block_tcgfeed extends block_base {
                                               html_entity_decode($replacement)
                                               ,ENT_QUOTES,'UTF-8',false)),
                                       '<b><i><i><em><strong><p><h1><h2><h3><h4><h5><h6><br><div><ul><ol><li>'),
-            $template);
+                                  $template);
         }
-
 
         return $template;
     }
