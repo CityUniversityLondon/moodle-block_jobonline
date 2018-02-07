@@ -25,7 +25,7 @@ M.block_tcgfeed =
 
         close_collapsible: function(me,event)
         {
-            if(!event.ctrlKey)
+            if(!event.ctrlKey) //Hold down ctrl to NOT close other jobs
             {
                 var temp=me.getAttributeNode('state').value;
                 var elements=document.getElementsByClassName('tcgfeed_job');
