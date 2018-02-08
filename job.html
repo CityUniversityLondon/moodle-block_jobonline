@@ -1,12 +1,14 @@
 <div id="<<jobid>>" class='tcgfeed_job collapsible' state="0" onClick="M.block_tcgfeed.close_collapsible(this,event);this.getAttributeNode('state').value^=1">
-  <h1 class='heading jobname'><<jobname>></h1>
+  <h1 class='heading jobname' alt='<<jobname>>' title='<<jobname>>'><<jobname>></h1>
   <div class='collapsibleinner' onClick="event.cancelBubble=true; event.stopPropagation=true;">
-    <div class='employername'><span class='label'><<employername_label>></span><<employername>></div>
-    <div class='location'><span class='label'><<location_label>></span><<location>></div>
-    <div class='salaryrange'><span class='label'><<salary_label>></span><<salary>></div>
-    <div class='closingdate'><span class='label'><<closingdate_label>></span><<closingdate>></div>
-    <div class='application'><span class='label'><<application_label>></span><<application>></div>
-    <div class='collapsible' state="1" onClick="this.getAttributeNode('state').value^=1">
+    <table>
+      <tr class='employername'><td class='label'><<employername_label>></td><td><<employername>></td></tr>
+      <tr class='location'><td class='label'><<location_label>></td><td><<location>></td></tr>
+      <tr class='salaryrange'><td class='label'><<salary_label>></td><td><<salary>></td></tr>
+      <tr class='closingdate'><td class='label'><<closingdate_label>></td><td><<closingdate>></td></tr>
+      <tr class='application'><td class='label'><<application_label>></td><td><<application>></td></tr>
+    </table>
+    <div class='jobdetails collapsible' state="1" onClick="this.getAttributeNode('state').value^=1">
       <h2 class='heading'>Summary</h2>
       <div class='summary collapsibleinner' onClick="event.cancelBubble=true; event.stopPropagation=true;">
         <div class='summarytext' >
