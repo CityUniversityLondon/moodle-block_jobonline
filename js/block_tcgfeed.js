@@ -29,7 +29,6 @@ M.block_tcgfeed =
             {
                 var temp=me.getAttributeNode('state').value;
                 var elements=document.getElementsByClassName('tcgfeed_job');
-                console.log(elements);
                 for(i=0;i<elements.length;i++)
                 {
                     elements[i].getAttributeNode('state').value=0;
