@@ -10,7 +10,7 @@ global $USER;
          
 $preset=get_user_preferences('tcgfeed_preferred_sector','');
 
-foreach(explode('|',get_config('block_tcgfeed','sectorlist')) as $sector)
+foreach(block_tcgfeed::allareas() as $sector)
 {
     $s=trim($sector);
     print "<option value='$s'";

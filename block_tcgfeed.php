@@ -68,8 +68,24 @@ class block_tcgfeed extends block_base {
                 $t=array();
             }
         }
-        $r=(!empty($t) ? $t :unserialize(get_config('block_tcgfeed','feedcache')));
+        $r=!empty($t) ? $t : unserialize(get_config('block_tcgfeed','feedcache'));
         return $r->content;
+    }
+
+    static function allareas()
+    {
+        $areas=array();
+        foreach(static::filterfeed(static::readfeed(false)) as $job)
+        {
+            foreach($job->vacancy->occupationalArea as $area)
+            {
+                $areas[$area]=1;
+            }
+        }
+
+        $t=array_keys($areas);
+        sort($t);
+        return $t;
     }
 
     static function buildcontents($check=false)
@@ -95,6 +111,7 @@ class block_tcgfeed extends block_base {
         return $content;
     }
 
+    // Filter out things not in date.
     protected static function basic_filtering($jobs)
     {
         $today=date('c');
@@ -179,12 +196,21 @@ class block_tcgfeed extends block_base {
         foreach(array('jobid'=>"job$i",
                       'jobname'=>$job->vacancy->title,
                       'employername'=>$job->organization->name,
-                      'location'=>$job->vacancy->location[0]->region,
+                      'location'=>implode(', ',array_filter(array_map(
+                          function($a)
+                          {
+                              if(!empty($a->region))
+                              {
+                                  return $a->region;
+                              }
+                              return null;
+                          },
+                          $job->vacancy->location))),
                       'summary'=>$job->vacancy->summary,
                       'sector'=>$job->organization->primaryBusinessArea,
                       'type'=>$job->vacancy->type[0],
                       'size'=>$job->organization->sizeOfOrganisation,
-                      'closingdate'=>date('d/m/Y H:i (e)',$d->getTimestamp()),
+                      'closingdate'=>date('jS M Y',$d->getTimestamp()),
         ) as $field=>$replacement)
         {
             $i++;
@@ -193,7 +219,8 @@ class block_tcgfeed extends block_base {
 
         if(!empty($job->vacancy->applicationEmail))
         {
-            $application="<a href='mailto:{$job->vacancy->applicationEmail}'>{$job->vacancy->applicationEmail}</a>";
+            $name=$job->vacancy->contact[0]->givenName.' '. $job->vacancy->contact[0]->familyName;
+            $application="$name <<a href='mailto:{$job->vacancy->applicationEmail}'>{$job->vacancy->applicationEmail}</a>>";
         }
         elseif(!empty($job->vacancy->applicationUrl) and !empty($job->vacancy->applicationUrl->link))
         {
@@ -245,7 +272,7 @@ class block_tcgfeed extends block_base {
                                           htmlentities(
                                               html_entity_decode($replacement)
                                               ,ENT_QUOTES,'UTF-8',false)),
-                                      '<b><i><i><em><strong><p><h1><h2><h3><h4><h5><h6><br><div><ul><ol><li>'),
+                                      '<a><b><i><i><em><strong><p><h1><h2><h3><h4><h5><h6><br><div><ul><ol><li>'),
                                   $template);
         }
 

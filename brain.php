@@ -34,7 +34,7 @@ function update_sector()
 
    if($USER
       and ($sector===''
-           or strpos(get_config('block_tcgfeed','sectorlist'),"$sector") !== FALSE))
+           or in_array($sector,block_tcgfeed::allareas())))
    {
        set_user_preference('tcgfeed_preferred_sector',$sector,$user);
        print block_tcgfeed::buildcontents(true);
