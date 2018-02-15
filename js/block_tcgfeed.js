@@ -3,7 +3,12 @@ M.block_tcgfeed =
         init: function()
         {
             this.lockdown(document.getElementById('tcgblockwrapper'));
+            var me=document.getElementsByClassName('block_tcgfeed')[0];
+            var tgt=document.getElementsByClassName('course-content')[0];
+            console.log(tgt);
             console.log('block_tcgfeed js loaded and locked');
+           tgt.insertBefore(me,tgt.firstChild);
+
             return true;
         },
 
@@ -11,7 +16,7 @@ M.block_tcgfeed =
         lockdown: function(node)
         {
             // Node type 1 is an element.
-            if(node.nodeType===1)
+            if(node.nodeType==1)
             {
                 node.removeAttribute('style');
             }
@@ -45,6 +50,7 @@ M.block_tcgfeed =
             }
         },
 
+        // func is the brain function
         // params is an array
         setitem: function(obj,func,params)
         {
@@ -64,6 +70,12 @@ M.block_tcgfeed =
             console.log('blocks/tcgfeed/brain.php?fn='+func+'&'+encodeURI(params));
             r.open('GET','/blocks/tcgfeed/brain.php?fn='+func+'&'+encodeURI(params));
             r.send(null);
+        },
+
+        setlocation: function(obj,user)
+        {
+            this.setitem(document.getElementById('tcgblockwrapper'),'update_location',
+                         ['user='+user,'location='+obj.value].join('&'));
         },
 
         setsector: function(obj,user)

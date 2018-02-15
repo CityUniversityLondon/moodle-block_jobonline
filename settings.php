@@ -26,4 +26,6 @@ $settings->add(new admin_setting_configtextarea('block_tcgfeed/sectorlist',
 
 $settings->add(new admin_setting_configtextarea('block_tcgfeed/typelist',get_string('typelist','block_tcgfeed'),get_string('typelist_description','block_tcgfeed'),"graduate scheme|permanent|fixed term|graduate internship|summer internship|placement|year in industry|casual work|insights programme|part-time|training/professional training",PARAM_TEXT));
 
-$settings->add(new admin_setting_configtext_with_maxlength ('block_tcgfeed/listsize',get_string('listsize','block_tcgfeed'),get_string('listsize_description','block_tcgfeed'),"15",PARAM_INT,3,3));
+$settings->add(new admin_setting_configduration('block_tcgfeed/feedcutoff',get_string('feedcutoff','block_tcgfeed'),get_string('feedcutoff_description','block_tcgfeed'),7*86400,86400));
+
+$settings->add(new admin_setting_configtext_with_maxlength ('block_tcgfeed/listsize',get_string('listsize','block_tcgfeed'),get_string('listsize_description','block_tcgfeed'),"150",PARAM_INT,3,3));

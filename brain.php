@@ -45,6 +45,31 @@ function update_sector()
    }
 }
 
+function update_location()
+{
+   $location=optional_param('location','',PARAM_TEXT);
+   $user=optional_param('user',0,PARAM_INT);
+
+   global $USER,$DB;
+
+   if($user)
+   {
+       $USER=core_user::get_user($user);
+   };
+
+   if($USER
+      and ($location===''
+           or in_array($location,block_tcgfeed::alllocations())))
+   {
+       set_user_preference('tcgfeed_preferred_location',$location,$user);
+       print block_tcgfeed::buildcontents(true);
+   }
+   else
+   {
+       print "failed";
+   }
+}
+
 function update_type()
 {
    $type=trim(optional_param('type','',PARAM_TEXT));

@@ -29,6 +29,36 @@ class block_tcgfeed extends block_base {
 
     /// Class Functions
 
+    // Try to put location and country into a useful format
+    static function fixup($job)
+    {
+        $places=array();
+
+        $v=$job->vacancy;
+
+        foreach($job->vacancy->location as $place)
+        {
+            if(isset($place->country))
+            {
+                $places[$place->country]=1;
+            }
+            if(isset($place->region))
+            {
+                $places[$place->region]=1;
+            }
+        }
+
+        $t=array_keys($places);
+        sort($t);
+
+        $job->vacancy->places=$t;
+
+        $job->vacancy->publishDate=strtotime($job->posting->publishDate);
+        $job->vacancy->unpublishDate=strtotime($job->vacancy->closingDate);
+
+        return $job;
+    }
+
     /*
       return array of job opportunities from feed.
       Caches feed for 10minutes
@@ -58,8 +88,14 @@ class block_tcgfeed extends block_base {
             curl_setopt($crl, CURLOPT_CONNECTTIMEOUT, 2);
             $rawcontent = trim(curl_exec($crl));
             $t=json_decode($rawcontent);
+
             if(!curl_errno($crl) and $t and json_last_error() === JSON_ERROR_NONE)
             {
+                // Do any processing here so it's cached.
+                $t->content=array_map("static::fixup",
+                                      $t->content);
+
+
                 set_config('feedcache',serialize($t),'block_tcgfeed');
                 set_config('feedtimestamp',time(),'block_tcgfeed');
             }
@@ -70,6 +106,24 @@ class block_tcgfeed extends block_base {
         }
         $r=!empty($t) ? $t : unserialize(get_config('block_tcgfeed','feedcache'));
         return $r->content;
+    }
+
+    static function alllocations()
+    {
+        $places=array();
+        foreach(static::filterfeed(static::readfeed(false)) as $job)
+        {
+            //    print_object($job->vacancy->regions);
+            $v=$job->vacancy;
+            foreach($v->places as $location)
+            {
+                $places[$location]=1;
+            }
+        }
+
+        $t=array_keys($places);
+        sort($t);
+        return $t;
     }
 
     static function allareas()
@@ -96,12 +150,15 @@ class block_tcgfeed extends block_base {
         $inner='';
         $maxjobs=(int)get_config('block_tcgfeed','listsize');
 
+        $cutoffdate=time()+get_config('block_tcgfeed','feedcutoff');
+
         $i=0;
-        foreach(static::filterfeed($check) as $j)
+        $feed=static::filterfeed($check);
+        foreach($feed as $j)
         {
             $inner.=static::convert_job($j);
             $i++;
-            if($i===$maxjobs)
+            if($i>=$maxjobs or $j->vacancy->unpublishDate>$cutoffdate)
             {
                 break;
             }
@@ -114,12 +171,12 @@ class block_tcgfeed extends block_base {
     // Filter out things not in date.
     protected static function basic_filtering($jobs)
     {
-        $today=date('c');
+        $today=(int)(time()/86400)*86400;
         $jobs=array_filter($jobs,
                            function ($a) use($today)
                            {
-                               return ($a->posting->publishDate < $today and
-                                       $a->posting->unpublishDate > $today);
+                               return ($a->vacancy->publishDate < $today and
+                                       $a->vacancy->unpublishDate >= $today);
                            }
         );
         return $jobs;
@@ -179,7 +236,18 @@ class block_tcgfeed extends block_base {
             );
         }
 
+        if($location=trim(get_user_preferences('tcgfeed_preferred_location')))
+        {
+            $temp=array_filter($temp,
+                               function ($a) use($location)
+                               {
+                                   return in_array($location,$a->vacancy->places);
+                               }
+            );
+        }
+
         usort($temp,function($a,$b){return $a->vacancy->closingDate > $b->vacancy->closingDate;});
+        // usort($temp,function($a,$b){return $a->vacancy->unpublishDate < $b->vacancy->unpublishDate;});
         return $temp;
     }
 
@@ -219,7 +287,7 @@ class block_tcgfeed extends block_base {
 
         if(!empty($job->vacancy->applicationEmail))
         {
-            $name=$job->vacancy->contact[0]->givenName.' '. $job->vacancy->contact[0]->familyName;
+            @$name=$job->vacancy->contact[0]->givenName.' '. $job->vacancy->contact[0]->familyName;
             $application="$name <<a href='mailto:{$job->vacancy->applicationEmail}'>{$job->vacancy->applicationEmail}</a>>";
         }
         elseif(!empty($job->vacancy->applicationUrl) and !empty($job->vacancy->applicationUrl->link))
@@ -326,6 +394,7 @@ class block_tcgfeed extends block_base {
     function get_content()
     {
         global $DB, $USER;
+
         $context  = context_system::instance();
 
         if ($this->content !== NULL)

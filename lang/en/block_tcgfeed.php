@@ -25,7 +25,10 @@ $string['typelist']='List of opportunity types';
 $string['typelist_description']="List of opportunity types which can be selected in the block's filter. Options should be separated by a | character. There should be no | at the start or end of the list.";
 
 $string['listsize']='Maximum number of jobs';
-$string['listsize_description']='The maximum number of jobs to show in the block. 0 means to show all matching jobs (not recommended).';
+$string['listsize_description']='The maximum number of jobs to show in the block. 0 means to show all matching jobs (not recommended). This overrides the cutoff date above.';
+
+$string['feedcutoff']='Latest date to show';
+$string['feedcutoff_description']='This time is added to the current time and any jobs with a closing date beyond that are not shown.';
 
 $string['employername_label']='Employer:';
 $string['closingdate_label']='Closing Date:';

@@ -16,6 +16,19 @@
     margin:0;
 }
 
+#tcgblockwrapper h1 .tcgblock_headerdate
+{
+    float:right;
+}
+
+@media mobile
+{
+    #tcgblockwrapper h1 .tcgblock_headerdate
+    {
+        display:none;
+    }
+}
+
 #tcgblockwrapper h1,
 #tcgblockwrapper h2,
 #tcgblockwrapper h3,

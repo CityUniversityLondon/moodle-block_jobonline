@@ -3,53 +3,68 @@ global $USER;
 ?>
 <div id='tcgblockwrapper'>
     <form>
+        <select onchange='M.block_tcgfeed.settype(this,"<?= $USER->id?>");'>
+            <option value=''>Any type</option>
+            <?php
+            $preset=get_user_preferences('tcgfeed_preferred_type','');
+            foreach(explode('|',get_config('block_tcgfeed','typelist')) as $type)
+            {
+                print "<option value='$type'";
+                if($type===$preset)
+                    print " selected";
+                print ">";
+                print ucfirst($type);
+                print "</option>\n";
+            }
+            ?>
+        </select>
+        <select onchange='M.block_tcgfeed.setsector(this,"<?= $USER->id?>");'>
+            <option value="">Any Sector</option>
+            <?php
 
-  <select onchange='M.block_tcgfeed.setsector(this,"<?= $USER->id?>");'>
-    <option value="">Any Sector</option>
-    <?php
-         
-$preset=get_user_preferences('tcgfeed_preferred_sector','');
+            $preset=get_user_preferences('tcgfeed_preferred_sector','');
 
-foreach(block_tcgfeed::allareas() as $sector)
-{
-    $s=trim($sector);
-    print "<option value='$s'";
-    if($s===$preset)
-        print " selected";
-    print ">";
-    print ucfirst($s);
-    print "</option>\n";
-}
-?>
-  </select>
-  <select onchange='M.block_tcgfeed.settype(this,"<?= $USER->id?>");'>
-    <option value=''>Any type</option>
-    <?php
-$preset=get_user_preferences('tcgfeed_preferred_type','');
-      foreach(explode('|',get_config('block_tcgfeed','typelist')) as $type)
-      {
-          print "<option value='$type'";
-          if($type===$preset)
-              print " selected";
-          print ">";
-          print ucfirst($type);
-          print "</option>\n";
-      }
-      ?>
-  </select>
-  <div id='tcgfeed_partfullbuttons'>
-          <?php
-$preset=get_user_preferences('tcgfeed_preferred_time','');
-foreach(array(''=>'Any', 'full-time'=>'Full-time', 'part-time'=>'Part-time') as $val=>$display)
-{
-    print "<span class='tcg_radiobtn'><input type=radio name='fullpart' value='$val'";
-    if ($val===$preset)
-        print " checked";
-    print " onchange='M.block_tcgfeed.settime(this,\"$USER->id\");'>$display</span>";
-}
-?>
-  </div></form>
-  <?=$inner?>
+            foreach(block_tcgfeed::allareas() as $sector)
+            {
+                $s=trim($sector);
+                print "<option value='$s'";
+                if($s===$preset)
+                    print " selected";
+                print ">";
+                print ucfirst($s);
+                print "</option>\n";
+            }
+            ?>
+        </select>
+        <div id='tcgfeed_partfullbuttons'>
+            <table width="100%"><tr>
+                <?php
+                $preset=get_user_preferences('tcgfeed_preferred_time','');
+                foreach(array(''=>'Any', 'full-time'=>'Full-time', 'part-time'=>'Part-time') as $val=>$display)
+                {
+                    print "<td class='tcg_radiobtn'><input type=radio name='fullpart' value='$val'";
+                    if ($val===$preset)
+                        print " checked";
+                    print " onchange='M.block_tcgfeed.settime(this,\"$USER->id\");'>$display</td>";
+                }
+                ?>
+                <td class='tcg_location'><select onchange='M.block_tcgfeed.setlocation(this,"<?= $USER->id?>");'><option value=""> Any location</option>
+                    <?php
+                    $preset=get_user_preferences('tcgfeed_preferred_location','');
+                    foreach(block_tcgfeed::alllocations() as $place)
+                    {
+                        $p=trim($place);
+                        print "<option value='$p'";
+                        if($place===$preset)
+                            print " selected";
+                        print ">";
+                        print ucfirst($p);
+                        print "</option>\n";
+                    } ?></select>
+
+            </tr></table>
+        </div></form>
+    <?=$inner?>
 </div>
 
 <?php return ob_get_clean();
