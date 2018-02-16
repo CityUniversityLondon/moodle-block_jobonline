@@ -78,8 +78,10 @@ class block_tcgfeed extends block_base {
         $header[]='Authorization: Basic '.base64_encode($password);
         $header[]='User-Agent: Moodle';
 
+        $t=array();
         $lastfeedread=get_config('block_tcgfeed','feedtimestamp');
-        if($check and time()-$lastfeedread>600)
+
+        if($check and time()-$lastfeedread>600 and rand(1,100)<25)
         {
             $crl=curl_init();
             curl_setopt($crl, CURLOPT_HTTPHEADER,$header);
@@ -98,13 +100,12 @@ class block_tcgfeed extends block_base {
 
                 set_config('feedcache',serialize($t),'block_tcgfeed');
                 set_config('feedtimestamp',time(),'block_tcgfeed');
-            }
-            else
-            {
-                $t=array();
+
             }
         }
+
         $r=!empty($t) ? $t : unserialize(get_config('block_tcgfeed','feedcache'));
+
         return $r->content;
     }
 
