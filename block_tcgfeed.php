@@ -122,8 +122,8 @@ class block_tcgfeed extends block_base {
         }
 
         $t=array_keys($places);
-        sort($t);
-        return $t;
+
+        return static::prioritise_array($t,get_config('block_tcgfeed','locationlist'));
     }
 
     static function allareas()
@@ -137,9 +137,32 @@ class block_tcgfeed extends block_base {
             }
         }
 
+        // array_keys() can't be passed directly
         $t=array_keys($areas);
-        sort($t);
-        return $t;
+        return static::prioritise_array($t,get_config('block_tcgfeed','sectorlist'));
+    }
+
+    // priorities is a bar-delimited string
+    static function prioritise_array($array,$priorities)
+    {
+        $priorities=explode('|',strtolower($priorities));
+
+        usort($array,
+              function($a,$b) use($priorities)
+              {
+                  if($ap=in_array(strtolower($a),$priorities) xor
+                     in_array(strtolower($b),$priorities))
+                  {
+                      return ($ap)? -1:1;
+                  }
+                  else
+                  {
+                      return strcmp($a,$b);
+                  }
+              }
+        );
+
+        return $array;
     }
 
     static function buildcontents($check=false)
