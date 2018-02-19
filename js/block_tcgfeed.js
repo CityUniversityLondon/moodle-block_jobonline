@@ -2,12 +2,18 @@ M.block_tcgfeed =
     {
         init: function()
         {
+            var me=document.getElementById('tcgblockwrapper');
+
             this.lockdown(document.getElementById('tcgblockwrapper'));
-            var me=document.getElementsByClassName('block_tcgfeed')[0];
-            var tgt=document.getElementsByClassName('course-content')[0];
 
             console.log('block_tcgfeed js loaded and locked');
-            tgt.insertBefore(me,tgt.firstChild);
+
+            if(me.getAttributeNode('bounce').value==='1')
+            {
+                var me=document.getElementsByClassName('block_tcgfeed')[0];
+                var tgt=document.getElementsByClassName('course-content')[0];
+                tgt.insertBefore(me,tgt.firstChild);
+            }
 
             return true;
         },

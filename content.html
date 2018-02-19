@@ -1,7 +1,7 @@
 <?php ob_start();
 global $USER;
 ?>
-<div id='tcgblockwrapper'>
+<div id='tcgblockwrapper' bounce="<?=get_config('block_tcgfeed','bounce')?>">
     <form>
         <select onchange='M.block_tcgfeed.settype(this,"<?= $USER->id?>");'>
             <option value=''>Any type</option>

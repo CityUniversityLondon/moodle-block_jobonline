@@ -14,6 +14,11 @@
 
 global $CFG;
 
+$settings->add(new admin_setting_configcheckbox('block_tcgfeed/bounce',
+                                                get_string('bounce','block_tcgfeed'),
+                                                get_string('bounce_description','block_tcgfeed'),
+                                                1));
+
 $settings->add(new admin_setting_configtext('block_tcgfeed/feedurl',get_string('feedurl','block_tcgfeed'),get_string('feedurl_description','block_tcgfeed'),'',PARAM_URL));
 
 $settings->add(new admin_setting_configpasswordunmask('block_tcgfeed/feedpassword',get_string('feedpassword','block_tcgfeed'),get_string('feedpassword_description','block_tcgfeed'),"",PARAM_RAW,64));
