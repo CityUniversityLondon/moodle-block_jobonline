@@ -229,7 +229,8 @@ class block_tcgfeed extends block_base {
         // Okay. All this is to avoid looping over the feed multiple times (although we've
         // already done that with basic_filtering). We define a bunch of filters and then
         // loop once, calling each one and ANDing the results. Any filter which the user
-        // Hasn't selected gets defined as always returning true;
+        // Hasn't selected gets defined as always returning true; we can't use just 'true'
+        // as the function needs to take a parameter.
 
         $sector=strtolower(trim(get_user_preferences('tcgfeed_preferred_sector')));
         $type=strtolower(trim(get_user_preferences('tcgfeed_preferred_type')));
