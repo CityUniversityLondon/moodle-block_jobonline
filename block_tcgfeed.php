@@ -112,7 +112,7 @@ class block_tcgfeed extends block_base {
     static function alllocations()
     {
         $places=array();
-        foreach(static::filterfeed(static::readfeed(false)) as $job)
+        foreach(static::filterfeed(false,array('type','area')) as $job)
         {
             //    print_object($job->vacancy->regions);
             $v=$job->vacancy;
@@ -130,7 +130,7 @@ class block_tcgfeed extends block_base {
     static function allareas()
     {
         $areas=array();
-        foreach(static::filterfeed(static::readfeed(false)) as $job)
+        foreach(static::filterfeed() as $job)
         {
             foreach($job->vacancy->occupationalArea as $area)
             {
@@ -177,8 +177,8 @@ class block_tcgfeed extends block_base {
         $cutoffdate=time()+get_config('block_tcgfeed','feedcutoff');
 
         $i=0;
-        $feed=static::filterfeed($check);
-        foreach($feed as $j)
+
+        foreach(static::filterfeed($check) as $j)
         {
             $inner.=static::convert_job($j);
             $i++;
@@ -203,13 +203,32 @@ class block_tcgfeed extends block_base {
                                        $a->vacancy->unpublishDate >= $today);
                            }
         );
+
+        if($time=strtolower(trim(get_user_preferences('tcgfeed_preferred_time'))))
+        {
+            $jobs=array_filter($jobs,
+                               function ($a) use($time)
+                               {
+                                   foreach($a->vacancy->type as $atime)
+                                   {
+                                       if(strtolower(trim($atime))==$time)
+                                       {
+                                           return true;
+                                       }
+                                   }
+                                   return false;
+                               }
+            );
+        }
+
         return $jobs;
     }
 
-    static function filterfeed($check=false)
+    static function filterfeed($check=false,$filters=array('area','type','location'))
     {
         $temp = static::basic_filtering(static::readfeed($check));
-        if($sector=strtolower(trim(get_user_preferences('tcgfeed_preferred_sector'))))
+
+        if(in_array('area',$filters) and $sector=strtolower(trim(get_user_preferences('tcgfeed_preferred_sector'))))
         {
             $temp=array_filter($temp,
                                function ($a) use($sector)
@@ -226,7 +245,7 @@ class block_tcgfeed extends block_base {
             );
         }
 
-        if($type=strtolower(trim(get_user_preferences('tcgfeed_preferred_type'))))
+        if(in_array('type',$filters) and $type=strtolower(trim(get_user_preferences('tcgfeed_preferred_type'))))
         {
             $temp=array_filter($temp,
                                function ($a) use($type)
@@ -243,24 +262,7 @@ class block_tcgfeed extends block_base {
             );
         }
 
-        if($time=strtolower(trim(get_user_preferences('tcgfeed_preferred_time'))))
-        {
-            $temp=array_filter($temp,
-                               function ($a) use($time)
-                               {
-                                   foreach($a->vacancy->type as $atime)
-                                   {
-                                       if(strtolower(trim($atime))==$time)
-                                       {
-                                           return true;
-                                       }
-                                   }
-                                   return false;
-                               }
-            );
-        }
-
-        if($location=trim(get_user_preferences('tcgfeed_preferred_location')))
+        if(in_array('location',$filters) and $location=trim(get_user_preferences('tcgfeed_preferred_location')))
         {
             $temp=array_filter($temp,
                                function ($a) use($location)
@@ -295,6 +297,11 @@ class block_tcgfeed extends block_base {
                               {
                                   return $a->region;
                               }
+                              if(!empty($a->country))
+                              {
+                                  return $a->country;
+                              }
+
                               return null;
                           },
                           $job->vacancy->location))),
