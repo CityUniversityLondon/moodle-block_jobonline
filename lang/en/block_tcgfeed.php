@@ -34,3 +34,6 @@ $string['employername_label']='Employer:';
 $string['closingdate_label']='Closing Date:';
 $string['application_label']='Application to:';
 $string['applicationlinkname']='Click here to apply (opens new window)';
+
+$string['ending-sort']='Closing Soon';
+$string['post-sort']='New Postings';

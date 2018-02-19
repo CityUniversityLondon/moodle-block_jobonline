@@ -178,13 +178,28 @@ class block_tcgfeed extends block_base {
 
         $i=0;
 
-        foreach(static::filterfeed($check) as $j)
+        if(get_user_preferences('tcgfeed_preferred_sort','ending-sort')==='ending-sort')
         {
-            $inner.=static::convert_job($j);
-            $i++;
-            if($i>=$maxjobs or $j->vacancy->unpublishDate>$cutoffdate)
+            foreach(static::filterfeed($check) as $j)
             {
-                break;
+                $inner.=static::convert_job($j);
+                $i++;
+                if($i>=$maxjobs or $j->vacancy->unpublishDate>$cutoffdate)
+                {
+                    break;
+                }
+            }
+        }
+        else
+        {
+            foreach(static::filterfeed($check) as $j)
+            {
+                $inner.=static::convert_job($j);
+                $i++;
+                if($i>=$maxjobs)
+                {
+                    break;
+                }
             }
         }
 
@@ -203,23 +218,6 @@ class block_tcgfeed extends block_base {
                                        $a->vacancy->unpublishDate >= $today);
                            }
         );
-
-        if($time=strtolower(trim(get_user_preferences('tcgfeed_preferred_time'))))
-        {
-            $jobs=array_filter($jobs,
-                               function ($a) use($time)
-                               {
-                                   foreach($a->vacancy->type as $atime)
-                                   {
-                                       if(strtolower(trim($atime))==$time)
-                                       {
-                                           return true;
-                                       }
-                                   }
-                                   return false;
-                               }
-            );
-        }
 
         return $jobs;
     }
@@ -289,9 +287,15 @@ class block_tcgfeed extends block_base {
             );
         }
 
+        if(get_user_preferences('tcgfeed_preferred_sort','ending-sort')==='ending-sort')
+        {
+            usort($temp,function($a,$b){return $a->vacancy->closingDate > $b->vacancy->closingDate;});
+        }
+        else
+        {
+            usort($temp,function($a,$b){return $a->vacancy->unpublishDate < $b->vacancy->unpublishDate;});
+        }
 
-        usort($temp,function($a,$b){return $a->vacancy->closingDate > $b->vacancy->closingDate;});
-        // usort($temp,function($a,$b){return $a->vacancy->unpublishDate < $b->vacancy->unpublishDate;});
         return $temp;
     }
 

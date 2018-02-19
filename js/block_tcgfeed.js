@@ -5,9 +5,9 @@ M.block_tcgfeed =
             this.lockdown(document.getElementById('tcgblockwrapper'));
             var me=document.getElementsByClassName('block_tcgfeed')[0];
             var tgt=document.getElementsByClassName('course-content')[0];
-            console.log(tgt);
+
             console.log('block_tcgfeed js loaded and locked');
-           tgt.insertBefore(me,tgt.firstChild);
+            tgt.insertBefore(me,tgt.firstChild);
 
             return true;
         },
@@ -67,7 +67,6 @@ M.block_tcgfeed =
                 }
             }
 
-            console.log('blocks/tcgfeed/brain.php?fn='+func+'&'+encodeURI(params));
             r.open('GET','/blocks/tcgfeed/brain.php?fn='+func+'&'+encodeURI(params));
             r.send(null);
         },
@@ -90,10 +89,10 @@ M.block_tcgfeed =
                          ['user='+user,'type='+obj.value].join('&'));
         },
 
-        settime: function(obj,user)
+        setsort: function(obj,user)
         {
-            this.setitem(document.getElementById('tcgblockwrapper'),'update_time',
-                         ['user='+user,'time='+obj.value].join('&'));
+            this.setitem(document.getElementById('tcgblockwrapper'),'update_sort',
+                         ['user='+user,'sort='+obj.value].join('&'));
         },
 
         test: function(object,text)

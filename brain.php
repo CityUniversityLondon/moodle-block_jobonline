@@ -95,9 +95,9 @@ function update_type()
    }
 }
 
-function update_time()
+function update_sort()
 {
-   $time=trim(optional_param('time','',PARAM_TEXT));
+   $sort=trim(optional_param('sort','ending-sort',PARAM_TEXT));
    $user=optional_param('user',0,PARAM_INT);
 
    global $USER,$DB,$SESSION;
@@ -108,9 +108,9 @@ function update_time()
    };
 
    if($USER
-      and in_array($time,array('','full-time','part-time')))
+      and in_array($sort,array('ending-sort','post-sort')))
    {
-       set_user_preference('tcgfeed_preferred_time',$time,$user);
+       set_user_preference('tcgfeed_preferred_sort',$sort,$user);
        print block_tcgfeed::buildcontents(true);
    }
    else

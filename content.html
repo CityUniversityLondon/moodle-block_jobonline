@@ -36,16 +36,17 @@ global $USER;
             }
             ?>
         </select>
-        <div id='tcgfeed_partfullbuttons'>
+        <div id='tcgfeed_sortbuttons'>
             <table width="100%"><tr>
                 <?php
-                $preset=get_user_preferences('tcgfeed_preferred_time','');
-                foreach(array(''=>'Any', 'full-time'=>'Full-time', 'part-time'=>'Part-time') as $val=>$display)
+                $preset=get_user_preferences('tcgfeed_preferred_sort','ending-sort');
+                foreach(array('ending-sort'=>static::$stringmanager->get_string('ending-sort','block_tcgfeed'),
+                'post-sort'=>static::$stringmanager->get_string('post-sort','block_tcgfeed')) as $val=>$display)
                 {
-                    print "<td class='tcg_radiobtn'><input type=radio name='fullpart' value='$val'";
+                    print "<td class='tcg_radiobtn'><input type=radio name='sortdir' value='$val'";
                     if ($val===$preset)
                         print " checked";
-                    print " onchange='M.block_tcgfeed.settime(this,\"$USER->id\");'>$display</td>";
+                    print " onchange='M.block_tcgfeed.setsort(this,\"$USER->id\");'>$display</td>";
                 }
                 ?>
                 <td class='tcg_location'><select onchange='M.block_tcgfeed.setlocation(this,"<?= $USER->id?>");'><option value=""> Any location</option>
