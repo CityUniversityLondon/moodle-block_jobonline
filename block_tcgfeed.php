@@ -228,49 +228,67 @@ class block_tcgfeed extends block_base {
     {
         $temp = static::basic_filtering(static::readfeed($check));
 
-        if(in_array('area',$filters) and $sector=strtolower(trim(get_user_preferences('tcgfeed_preferred_sector'))))
+        // Okay. All this is to avoid looping over the feed multiple times (although we've
+        // already done that with basic_filtering). We define a bunch of filters and then
+        // loop once, calling each one and ANDing the results. Any filter which the user
+        // Hasn't selected gets defined as always returning true;
+
+        $sector=strtolower(trim(get_user_preferences('tcgfeed_preferred_sector')));
+        $type=strtolower(trim(get_user_preferences('tcgfeed_preferred_type')));
+        $location=trim(get_user_preferences('tcgfeed_preferred_location'));
+
+        $nofilter=function($a){return true;};
+
+        $areafilter=(in_array('area',$filters) and $sector) ?
+                   function ($a) use($sector)
+                   {
+                       foreach($a->vacancy->occupationalArea as $area)
+                       {
+                           if(strtolower(trim($area))==$sector)
+                           {
+                               return true;
+                           }
+                       }
+                       return false;
+                   }
+                   :$nofilter;
+
+        $typefilter=(in_array('type',$filters) and $type)?
+                   function ($a) use($type)
+                   {
+                       foreach($a->vacancy->type as $atype)
+                       {
+                           if(strtolower(trim($atype))==$type)
+                           {
+                               return true;
+                           }
+                       }
+                       return false;
+                   }
+                   :$nofilter;
+
+        $locationfilter=(in_array('location',$filters) and $location)?
+                       function ($a) use($location)
+                       {
+                           return in_array($location,$a->vacancy->places);
+                       }
+                       :$nofilter;
+
+
+        if($areafilter !== $nofilter or
+           $locationfilter !== $nofilter or
+           $typefilter !== $nofilter)
         {
             $temp=array_filter($temp,
-                               function ($a) use($sector)
+                               function($item) use($areafilter,$typefilter,$locationfilter)
                                {
-                                   foreach($a->vacancy->occupationalArea as $area)
-                                   {
-                                       if(strtolower(trim($area))==$sector)
-                                       {
-                                           return true;
-                                       }
-                                   }
-                                   return false;
+                                   return ($areafilter($item) and
+                                           $locationfilter($item) and
+                                           $typefilter($item));
                                }
             );
         }
 
-        if(in_array('type',$filters) and $type=strtolower(trim(get_user_preferences('tcgfeed_preferred_type'))))
-        {
-            $temp=array_filter($temp,
-                               function ($a) use($type)
-                               {
-                                   foreach($a->vacancy->type as $atype)
-                                   {
-                                       if(strtolower(trim($atype))==$type)
-                                       {
-                                           return true;
-                                       }
-                                   }
-                                   return false;
-                               }
-            );
-        }
-
-        if(in_array('location',$filters) and $location=trim(get_user_preferences('tcgfeed_preferred_location')))
-        {
-            $temp=array_filter($temp,
-                               function ($a) use($location)
-                               {
-                                   return in_array($location,$a->vacancy->places);
-                               }
-            );
-        }
 
         usort($temp,function($a,$b){return $a->vacancy->closingDate > $b->vacancy->closingDate;});
         // usort($temp,function($a,$b){return $a->vacancy->unpublishDate < $b->vacancy->unpublishDate;});
