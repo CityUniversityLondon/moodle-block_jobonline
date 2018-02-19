@@ -31,6 +31,7 @@ $string['feedcutoff']='Latest date to show';
 $string['feedcutoff_description']='This time is added to the current time and any jobs with a closing date beyond that are not shown.';
 
 $string['employername_label']='Employer:';
+$string['postingdate_label']='Posted:';
 $string['closingdate_label']='Closing Date:';
 $string['application_label']='Application to:';
 $string['applicationlinkname']='Click here to apply (opens new window)';

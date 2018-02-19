@@ -1,10 +1,11 @@
 <div id="<<jobid>>" class='tcgfeed_job collapsible' state="0" onClick="M.block_tcgfeed.close_collapsible(this,event);this.getAttributeNode('state').value^=1">
-  <h1 class='heading jobname' alt='<<jobname>>' title='<<jobname>>'><<jobname>><span class='tcgblock_headerdate'><<closingdate>></span></h1>
+  <h1 class='heading jobname' alt='<<jobname>>' title='<<jobname>>'><<jobname>><span title='Closing Date' class='tcgblock_headerdate'><<closingdate>></span></h1>
   <div class='collapsibleinner' onClick="event.cancelBubble=true; event.stopPropagation=true;">
     <table>
       <tr class='employername'><td class='label'><<employername_label>></td><td><<employername>></td></tr>
       <tr class='location'><td class='label'><<location_label>></td><td><<location>></td></tr>
       <tr class='salaryrange'><td class='label'><<salary_label>></td><td><<salary>></td></tr>
+      <tr class='postingdate'><td class='label'><<postingdate_label>></td><td><<postingdate>></td></tr>
       <tr class='closingdate'><td class='label'><<closingdate_label>></td><td><<closingdate>></td></tr>
       <tr class='application'><td class='label'><<application_label>></td><td><<application>></td></tr>
     </table>

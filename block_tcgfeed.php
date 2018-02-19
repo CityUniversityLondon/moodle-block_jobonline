@@ -294,7 +294,7 @@ class block_tcgfeed extends block_base {
         }
         else
         {
-            usort($temp,function($a,$b){return $a->vacancy->unpublishDate < $b->vacancy->unpublishDate;});
+            usort($temp,function($a,$b){return $a->vacancy->publishDate < $b->vacancy->publishDate;});
         }
 
         return $temp;
@@ -308,7 +308,8 @@ class block_tcgfeed extends block_base {
     {
         $i=0;
         $template=file_get_contents(__DIR__.'/job.html');
-        $d=DateTime::createFromFormat('Y-m-d\TH:i:s+',$job->vacancy->closingDate);
+
+        $cd=DateTime::createFromFormat('Y-m-d\TH:i:s+',$job->vacancy->closingDate);
 
         foreach(array('jobid'=>"job$i",
                       'jobname'=>$job->vacancy->title,
@@ -332,7 +333,8 @@ class block_tcgfeed extends block_base {
                       'sector'=>$job->organization->primaryBusinessArea,
                       'type'=>$job->vacancy->type[0],
                       'size'=>$job->organization->sizeOfOrganisation,
-                      'closingdate'=>date('jS M Y',$d->getTimestamp()),
+                      'closingdate'=>date('jS M Y',$cd->getTimestamp()),
+                      'postingdate'=>date('jS M Y',$job->vacancy->publishDate),
         ) as $field=>$replacement)
         {
             $i++;
