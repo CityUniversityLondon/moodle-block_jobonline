@@ -237,7 +237,6 @@ class block_tcgfeed extends block_base {
         $sector=strtolower(trim(get_user_preferences('tcgfeed_preferred_sector')));
         $type=strtolower(trim(get_user_preferences('tcgfeed_preferred_type')));
         $location=trim(get_user_preferences('tcgfeed_preferred_location'));
-
         $nofilter=function($a){return true;};
 
         $today=(int)(time()/86400)*86400;
@@ -279,10 +278,9 @@ class block_tcgfeed extends block_base {
         $locationfilter=(in_array('location',$filters) and $location)?
                        function ($a) use($location)
                        {
-                           return in_array($location,$a->vacancy->places);
+                           return in_array($location,array_map('strtolower',$a->vacancy->places));
                        }
                        :$nofilter;
-
 
         if($areafilter !== $nofilter or
            $locationfilter !== $nofilter or

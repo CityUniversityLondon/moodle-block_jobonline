@@ -68,9 +68,9 @@ M.block_tcgfeed =
                     if (r.status === 200)
                     {
                         M.block_tcgfeed.updateitem(obj,r.responseText);
-                        obj.style.filter='blur(0px)';
                     }
                 }
+                obj.style.filter='blur(0px)';
             }
 
             r.open('GET','/blocks/tcgfeed/brain.php?fn='+func+'&'+encodeURI(params));

@@ -36,7 +36,7 @@ function update_sector()
       and ($sector===''
            or in_array($sector,block_tcgfeed::allareas())))
    {
-       set_user_preference('tcgfeed_preferred_sector',$sector,$user);
+       set_user_preference('tcgfeed_preferred_sector',strtolower($sector),$user);
        print block_tcgfeed::buildcontents(true);
    }
    else
@@ -61,7 +61,7 @@ function update_location()
       and ($location===''
            or in_array($location,block_tcgfeed::alllocations())))
    {
-       set_user_preference('tcgfeed_preferred_location',$location,$user);
+       set_user_preference('tcgfeed_preferred_location',strtolower($location),$user);
        print block_tcgfeed::buildcontents(true);
    }
    else
@@ -84,7 +84,7 @@ function update_type()
 
    if($USER)
    {
-       set_user_preference('tcgfeed_preferred_type',$type,$user);
+       set_user_preference('tcgfeed_preferred_type',strtolower($type),$user);
        print block_tcgfeed::buildcontents(true);
    }
    else

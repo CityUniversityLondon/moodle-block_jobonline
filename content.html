@@ -22,13 +22,13 @@ global $USER;
             <option value="">Any Sector</option>
             <?php
 
-            $preset=get_user_preferences('tcgfeed_preferred_sector','');
+            $preset=strtolower(get_user_preferences('tcgfeed_preferred_sector',''));
 
             foreach(block_tcgfeed::allareas() as $sector)
             {
                 $s=trim($sector);
                 print "<option value='$s'";
-                if($s===$preset)
+                if(strtolower($s)===$preset)
                     print " selected";
                 print ">";
                 print ucfirst($s);
@@ -49,14 +49,14 @@ global $USER;
                     print " onchange='M.block_tcgfeed.setsort(this,\"$USER->id\");'>$display</td>";
                 }
                 ?>
-                <td class='tcg_location'><select onchange='M.block_tcgfeed.setlocation(this,"<?= $USER->id?>");'><option value=""> Any location</option>
+                <td class='tcg_location'><select onchange='M.block_tcgfeed.setlocation(this,"<?= $USER->id?>");'><option value="">Any location</option>
                     <?php
-                    $preset=get_user_preferences('tcgfeed_preferred_location','');
+                    $preset=strtolower(get_user_preferences('tcgfeed_preferred_location',''));
                     foreach(block_tcgfeed::alllocations() as $place)
                     {
                         $p=trim($place);
                         print "<option value='$p'";
-                        if($place===$preset)
+                        if(strtolower($place)===$preset)
                             print " selected";
                         print ">";
                         print ucfirst($p);
