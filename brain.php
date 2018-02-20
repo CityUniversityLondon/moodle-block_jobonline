@@ -82,9 +82,7 @@ function update_type()
        $USER=core_user::get_user($user);
    };
 
-   if($USER
-      and ($type==='' or
-           strpos(get_config('block_tcgfeed','typelist'),$type) !== FALSE))
+   if($USER)
    {
        set_user_preference('tcgfeed_preferred_type',$type,$user);
        print block_tcgfeed::buildcontents(true);

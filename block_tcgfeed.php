@@ -224,29 +224,14 @@ class block_tcgfeed extends block_base {
         return $content;
     }
 
-    // Filter out things not in date.
-    protected static function basic_filtering($jobs)
-    {
-        $today=(int)(time()/86400)*86400;
-        $jobs=array_filter($jobs,
-                           function ($a) use($today)
-                           {
-                               return ($a->vacancy->publishDate < $today and
-                                       $a->vacancy->unpublishDate >= $today);
-                           }
-        );
-
-        return $jobs;
-    }
-
     static function filterfeed($check=false,$filters=array('area','type','location'))
     {
-        $temp = static::basic_filtering(static::readfeed($check));
+        $temp = static::readfeed($check);
 
-        // Okay. All this is to avoid looping over the feed multiple times (although we've
-        // already done that with basic_filtering). We define a bunch of filters and then
+        // Okay. All this is to avoid looping over the feed multiple times.
+        // We define a bunch of filters and then
         // loop once, calling each one and ANDing the results. Any filter which the user
-        // Hasn't selected gets defined as always returning true; we can't use just 'true'
+        // hasn't selected gets defined as always returning true; we can't use just 'true'
         // as the function needs to take a parameter.
 
         $sector=strtolower(trim(get_user_preferences('tcgfeed_preferred_sector')));
@@ -254,6 +239,14 @@ class block_tcgfeed extends block_base {
         $location=trim(get_user_preferences('tcgfeed_preferred_location'));
 
         $nofilter=function($a){return true;};
+
+        $today=(int)(time()/86400)*86400;
+
+        $datefilter = function ($a) use($today)
+        {
+            return ($a->vacancy->publishDate < $today and
+                    $a->vacancy->unpublishDate >= $today);
+        };
 
         $areafilter=(in_array('area',$filters) and $sector) ?
                    function ($a) use($sector)
@@ -296,9 +289,10 @@ class block_tcgfeed extends block_base {
            $typefilter !== $nofilter)
         {
             $temp=array_filter($temp,
-                               function($item) use($areafilter,$typefilter,$locationfilter)
+                               function($item) use($datefilter,$areafilter,$typefilter,$locationfilter)
                                {
-                                   return ($areafilter($item) and
+                                   return ($datefilter($item) and
+                                           $areafilter($item) and
                                            $locationfilter($item) and
                                            $typefilter($item));
                                }

@@ -6,11 +6,11 @@ global $USER;
         <select onchange='M.block_tcgfeed.settype(this,"<?= $USER->id?>");'>
             <option value=''>Any type</option>
             <?php
-            $preset=get_user_preferences('tcgfeed_preferred_type','');
+            $preset=strtolower(trim(get_user_preferences('tcgfeed_preferred_type','')));
             foreach(block_tcgfeed::alltypes() as $type)
             {
                 print "<option value='$type'";
-                if($type===$preset)
+                if(strtolower($type)===$preset)
                     print " selected";
                 print ">";
                 print ucfirst($type);
