@@ -329,7 +329,7 @@ class block_tcgfeed extends block_base {
         $cd=DateTime::createFromFormat('Y-m-d\TH:i:s+',$job->vacancy->closingDate);
 
         foreach(array('jobid'=>"job$i",
-                      'jobname'=>$job->vacancy->title,
+                      'jobname'=>$job->vacancy->title.' ('.implode('/',$job->vacancy->type).')',
                       'employername'=>$job->organization->name,
                       'location'=>implode(', ',array_filter(array_map(
                           function($a)
