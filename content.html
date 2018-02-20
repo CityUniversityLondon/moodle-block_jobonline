@@ -7,7 +7,7 @@ global $USER;
             <option value=''>Any type</option>
             <?php
             $preset=get_user_preferences('tcgfeed_preferred_type','');
-            foreach(explode('|',get_config('block_tcgfeed','typelist')) as $type)
+            foreach(block_tcgfeed::alltypes() as $type)
             {
                 print "<option value='$type'";
                 if($type===$preset)

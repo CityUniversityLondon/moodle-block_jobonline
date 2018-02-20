@@ -100,7 +100,6 @@ class block_tcgfeed extends block_base {
 
                 set_config('feedcache',serialize($t),'block_tcgfeed');
                 set_config('feedtimestamp',time(),'block_tcgfeed');
-
             }
         }
 
@@ -126,6 +125,24 @@ class block_tcgfeed extends block_base {
 
         return static::prioritise_array($t,get_config('block_tcgfeed','locationlist'));
     }
+
+    static function alltypes()
+    {
+        $types=array();
+        foreach(static::filterfeed() as $job)
+        {
+            foreach($job->vacancy->type as $type)
+            {
+                $types[$type]=1;
+            }
+        }
+
+        // array_keys() can't be passed directly
+        $t=array_keys($types);
+        sort($t);
+        return $t;
+    }
+
 
     static function allareas()
     {
