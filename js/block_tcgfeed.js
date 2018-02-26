@@ -73,7 +73,17 @@ M.block_tcgfeed =
                 obj.style.filter='blur(0px)';
             }
 
-            r.open('GET','/blocks/tcgfeed/brain.php?fn='+func+'&'+encodeURI(params));
+            r.onerror=function(e)
+            {
+                obj.style.filter='blur(0px)';
+            }
+
+            r.ontimeout=function(e)
+            {
+                obj.style.filter='blur(0px)';
+            }
+
+            r.open('GET','/blocks/tcgfeed/brain.php?fn='+func+'&'+encodeURI(params)+'&'+Date.now());
             r.send(null);
         },
 
