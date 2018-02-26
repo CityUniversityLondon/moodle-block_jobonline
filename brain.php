@@ -25,7 +25,7 @@ function update_sector()
    $sector=optional_param('sector','',PARAM_TEXT);
    $user=optional_param('user',0,PARAM_INT);
 
-   global $USER,$DB;
+   global $DB;
 
    if($user)
    {
@@ -36,7 +36,7 @@ function update_sector()
       and ($sector===''
            or in_array($sector,block_tcgfeed::allareas())))
    {
-       set_user_preference('tcgfeed_preferred_sector',strtolower($sector),$user);
+       set_user_preference('tcgfeed_preferred_sector',strtolower($sector));
        print block_tcgfeed::buildcontents(true);
    }
    else
@@ -50,7 +50,7 @@ function update_location()
    $location=optional_param('location','',PARAM_TEXT);
    $user=optional_param('user',0,PARAM_INT);
 
-   global $USER,$DB;
+   global $DB;
 
    if($user)
    {
@@ -61,7 +61,7 @@ function update_location()
       and ($location===''
            or in_array($location,block_tcgfeed::alllocations())))
    {
-       set_user_preference('tcgfeed_preferred_location',strtolower($location),$user);
+       set_user_preference('tcgfeed_preferred_location',strtolower($location));
        print block_tcgfeed::buildcontents(true);
    }
    else
@@ -84,7 +84,7 @@ function update_type()
 
    if($USER)
    {
-       set_user_preference('tcgfeed_preferred_type',strtolower($type),$user);
+       set_user_preference('tcgfeed_preferred_type',strtolower($type));
        print block_tcgfeed::buildcontents(true);
    }
    else
@@ -108,7 +108,7 @@ function update_sort()
    if($USER
       and in_array($sort,array('ending-sort','post-sort')))
    {
-       set_user_preference('tcgfeed_preferred_sort',$sort,$user);
+       set_user_preference('tcgfeed_preferred_sort',$sort);
        print block_tcgfeed::buildcontents(true);
    }
    else
