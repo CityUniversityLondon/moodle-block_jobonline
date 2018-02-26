@@ -111,7 +111,7 @@ class block_tcgfeed extends block_base {
     static function alllocations()
     {
         $places=array();
-        foreach(static::filterfeed(false,array('type','area')) as $job)
+        foreach(static::filterfeed(false,null,array('type','area')) as $job)
         {
             //    print_object($job->vacancy->regions);
             $v=$job->vacancy;
@@ -183,7 +183,7 @@ class block_tcgfeed extends block_base {
         return $array;
     }
 
-    static function buildcontents($check=false)
+    static function buildcontents($check=false,$user=null)
     {
         static::$stringmanager=get_string_manager();
 
@@ -195,9 +195,9 @@ class block_tcgfeed extends block_base {
 
         $i=0;
 
-        if(get_user_preferences('tcgfeed_preferred_sort','ending-sort')==='ending-sort')
+        if(get_user_preferences('tcgfeed_preferred_sort','ending-sort',$user)==='ending-sort')
         {
-            foreach(static::filterfeed($check) as $j)
+            foreach(static::filterfeed($check,$user) as $j)
             {
                 $inner.=static::convert_job($j);
                 $i++;
@@ -209,7 +209,7 @@ class block_tcgfeed extends block_base {
         }
         else
         {
-            foreach(static::filterfeed($check) as $j)
+            foreach(static::filterfeed($check,$user) as $j)
             {
                 $inner.=static::convert_job($j);
                 $i++;
@@ -224,7 +224,7 @@ class block_tcgfeed extends block_base {
         return $content;
     }
 
-    static function filterfeed($check=false,$filters=array('area','type','location'))
+    static function filterfeed($check=false,$user=null,$filters=array('area','type','location'))
     {
         $temp = static::readfeed($check);
 
@@ -234,9 +234,9 @@ class block_tcgfeed extends block_base {
         // hasn't selected gets defined as always returning true; we can't use just 'true'
         // as the function needs to take a parameter.
 
-        $sector=strtolower(trim(get_user_preferences('tcgfeed_preferred_sector')));
-        $type=strtolower(trim(get_user_preferences('tcgfeed_preferred_type')));
-        $location=trim(get_user_preferences('tcgfeed_preferred_location'));
+        $sector=strtolower(trim(get_user_preferences('tcgfeed_preferred_sector','',$user)));
+        $type=strtolower(trim(get_user_preferences('tcgfeed_preferred_type','',$user)));
+        $location=trim(get_user_preferences('tcgfeed_preferred_location','',$user));
         $nofilter=function($a){return true;};
 
         $today=(int)(time()/86400)*86400;
