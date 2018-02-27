@@ -129,7 +129,7 @@ class block_tcgfeed extends block_base {
     static function alltypes()
     {
         $types=array();
-        foreach(static::filterfeed() as $job)
+        foreach(static::filterfeed(false,array('location','area')) as $job)
         {
             foreach($job->vacancy->type as $type)
             {
@@ -147,7 +147,7 @@ class block_tcgfeed extends block_base {
     static function allareas()
     {
         $areas=array();
-        foreach(static::filterfeed() as $job)
+        foreach(static::filterfeed(false,array('type','location')) as $job)
         {
             foreach($job->vacancy->occupationalArea as $area)
             {
