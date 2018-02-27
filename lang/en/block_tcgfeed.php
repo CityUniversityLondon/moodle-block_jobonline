@@ -40,4 +40,4 @@ $string['application_label']='Application to:';
 $string['applicationlinkname']='Click here to apply (opens new window)';
 
 $string['ending-sort']='Closing Soon';
-$string['post-sort']='New Postings';
+$string['post-sort']='Newly listed';
