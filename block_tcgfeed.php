@@ -381,21 +381,7 @@ class block_tcgfeed extends block_base {
         foreach(array('jobid'=>"job$i",
                       'jobname'=>$job->vacancy->title.' ('.implode('/',$job->vacancy->type).')',
                       'employername'=>$job->organization->name,
-                      'location'=>implode(', ',array_filter(array_map(
-                          function($a)
-                          {
-                              if(!empty($a->region))
-                              {
-                                  return $a->region;
-                              }
-                              if(!empty($a->country))
-                              {
-                                  return $a->country;
-                              }
-
-                              return null;
-                          },
-                          $job->vacancy->location))),
+                      'location'=>implode(', ',$job->vacancy->places),
                       'summary'=>$job->vacancy->summary,
                       'sector'=>$job->organization->primaryBusinessArea,
                       'type'=>$job->vacancy->type[0],
