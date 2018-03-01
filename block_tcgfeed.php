@@ -113,11 +113,10 @@ class block_tcgfeed extends block_base {
         $places=array();
         foreach(static::filterfeed(false,array('type','area')) as $job)
         {
-            //    print_object($job->vacancy->regions);
             $v=$job->vacancy;
             foreach($v->places as $location)
             {
-                $places[$location]=1;
+                $places[trim($location)]=1;
             }
         }
 
@@ -133,7 +132,7 @@ class block_tcgfeed extends block_base {
         {
             foreach($job->vacancy->type as $type)
             {
-                $types[$type]=1;
+                $types[trim($type)]=1;
             }
         }
 
@@ -151,7 +150,7 @@ class block_tcgfeed extends block_base {
         {
             foreach($job->vacancy->occupationalArea as $area)
             {
-                $areas[$area]=1;
+                $areas[trim($area)]=1;
             }
         }
 
@@ -195,7 +194,7 @@ class block_tcgfeed extends block_base {
 
         $i=0;
 
-        if(get_user_preferences('tcgfeed_preferred_sort','ending-sort')==='ending-sort')
+        if(static::get_pref('tcgfeed_preferred_sort','ending-sort')==='ending-sort')
         {
             foreach(static::filterfeed($check) as $j)
             {
@@ -224,6 +223,55 @@ class block_tcgfeed extends block_base {
         return $content;
     }
 
+    static function make_pref($name)
+    {
+        global $SESSION;
+        if(!isset($SESSION->block_tcgfeed))
+        {
+            $SESSION->block_tcgfeed=new stdClass;
+        }
+
+        if(!isset($SESSION->block_tcgfeed->$name))
+        {
+            $SESSION->block_tcgfeed->$name=null;
+        }
+    }
+
+    static function get_pref($name,$default='')
+    {
+        global $SESSION;
+
+        static::make_pref($name);
+
+        if(!is_null($SESSION->block_tcgfeed->$name))
+        {
+            $v=$SESSION->block_tcgfeed->$name;
+        }
+        else
+        {
+            $v=get_user_preferences($name,$default);
+            $SESSION->block_tcgfeed->$name=$v;
+        }
+
+        return strtolower(trim($v));
+    }
+
+    static function set_pref($name,$value)
+    {
+        global $SESSION,$USER;
+
+        static::make_pref($name);
+        $value=strtolower(trim($value));
+
+        $SESSION->block_tcgfeed->$name=$value;
+        if(!isguestuser())
+        {
+            set_user_preference($name, $value);
+        }
+
+        return $value;
+    }
+
     static function filterfeed($check=false,$filters=array('area','type','location'))
     {
         $temp = static::readfeed($check);
@@ -234,9 +282,9 @@ class block_tcgfeed extends block_base {
         // hasn't selected gets defined as always returning true; we can't use just 'true'
         // as the function needs to take a parameter.
 
-        $sector=strtolower(trim(get_user_preferences('tcgfeed_preferred_sector','')));
-        $type=strtolower(trim(get_user_preferences('tcgfeed_preferred_type','')));
-        $location=trim(get_user_preferences('tcgfeed_preferred_location',''));
+        $sector=static::get_pref('tcgfeed_preferred_sector','');
+        $type=static::get_pref('tcgfeed_preferred_type','');
+        $location=static::get_pref('tcgfeed_preferred_location','');
         $nofilter=function($a){return true;};
 
         $today=(int)(time()/86400)*86400;
@@ -297,7 +345,7 @@ class block_tcgfeed extends block_base {
             );
         }
 
-        if(get_user_preferences('tcgfeed_preferred_sort','ending-sort')==='ending-sort')
+        if(static::get_pref('tcgfeed_preferred_sort','ending-sort')==='ending-sort')
         {
             usort($temp,function($a,$b){return $a->vacancy->closingDate > $b->vacancy->closingDate;});
         }
@@ -458,7 +506,7 @@ class block_tcgfeed extends block_base {
      */
     function get_content()
     {
-        global $DB, $USER;
+        global $DB, $USER, $SESSION;
 
         $context  = context_system::instance();
 
