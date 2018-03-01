@@ -40,10 +40,20 @@ class block_tcgfeed extends block_base {
         {
             if(isset($place->country))
             {
+                if($place->country==='Ireland')
+                {
+                    $place->country='Republic of Ireland';
+                }
+
                 $places[$place->country]=1;
             }
             if(isset($place->region))
             {
+                if($place->region==='United States')
+                {
+                    $place->region='United States of America (USA)';
+                }
+
                 $places[$place->region]=1;
             }
         }
