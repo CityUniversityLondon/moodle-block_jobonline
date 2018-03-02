@@ -403,7 +403,7 @@ class block_tcgfeed extends block_base {
         {
             $applicationlinkname=static::$stringmanager->get_string('applicationlinkname','block_tcgfeed');
             $applicationlink=$job->vacancy->applicationUrl->link;
-            $application="<a href='$applicationlink' target=_top>$applicationlinkname</a>";
+            $application="<a href='$applicationlink' target=_blank>$applicationlinkname</a>";
         }
         else
         {
