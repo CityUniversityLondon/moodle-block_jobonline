@@ -380,7 +380,7 @@ class block_tcgfeed extends block_base {
 
         foreach(array('jobid'=>"job$i",
                       'jobname'=>$job->vacancy->title.' ('.implode('/',$job->vacancy->type).')',
-                      'employername'=>$job->organization->name,
+                      'employername'=>(isset($job->vacancy->employerTitle))?$job->vacancy->employerTitle: $job->organization->name,
                       'location'=>implode(', ',$job->vacancy->places),
                       'summary'=>$job->vacancy->summary,
                       'sector'=>$job->organization->primaryBusinessArea,
