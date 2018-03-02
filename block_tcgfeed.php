@@ -49,9 +49,9 @@ class block_tcgfeed extends block_base {
             }
             if(isset($place->region))
             {
-                if($place->region==='United States')
+                if($place->region==='United States of America (USA)')
                 {
-                    $place->region='United States of America (USA)';
+                    $place->region='United States';
                 }
 
                 $places[$place->region]=1;
