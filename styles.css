@@ -29,6 +29,21 @@
     }
 }
 
+@media (max-width: 800px)
+{
+    #tcgblockwrapper #tcgfeed_sortbuttons td.tcg_sortbycell
+    {
+        display:none;
+    }
+}
+
+.tcg_radiobtn
+{
+    width:25%;
+}
+
+
+
 #tcgblockwrapper h1,
 #tcgblockwrapper h2,
 #tcgblockwrapper h3,

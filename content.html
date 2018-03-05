@@ -37,7 +37,7 @@ global $USER;
             ?>
         </select>
         <div id='tcgfeed_sortbuttons'>
-            <table width="100%"><tr>
+            <table width="100%"><tr><td class='tcg_sortbycell'>Sort By:</td>
                 <?php
                 $preset=block_tcgfeed::get_pref('tcgfeed_preferred_sort','ending-sort');
                 foreach(array('ending-sort'=>static::$stringmanager->get_string('ending-sort','block_tcgfeed'),
