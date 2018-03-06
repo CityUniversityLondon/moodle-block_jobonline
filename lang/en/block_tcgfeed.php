@@ -41,3 +41,5 @@ $string['applicationlinkname']='Click here to apply (opens new window)';
 
 $string['ending-sort']='Closing Soon';
 $string['post-sort']='Newly listed';
+
+$string['general_cron']='TCG Feed Refresh';

@@ -13,10 +13,13 @@
  * @version 20180129
  */
 
+include_once(__DIR__.'/../block_tcgfeed.php');
+
 function xmldb_block_tcgfeed_upgrade($oldversion)
 {
    global $DB,$CFG;
    $success=true;
 
+   block_tcgfeed::readfeed();
    return $success;
 }

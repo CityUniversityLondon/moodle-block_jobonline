@@ -70,10 +70,9 @@ class block_tcgfeed extends block_base {
     }
 
     /*
-      return array of job opportunities from feed.
-      Caches feed for 10minutes
+      Read the feed. Called by cron.
      */
-    static function readfeed($check=false)
+    static function readfeed()
     {
         $password=get_config('block_tcgfeed','feedpassword');
         $url=get_config('block_tcgfeed','feedurl');
@@ -89,28 +88,22 @@ class block_tcgfeed extends block_base {
         $header[]='User-Agent: Moodle';
 
         $t=array();
-        $lastfeedread=get_config('block_tcgfeed','feedtimestamp');
 
-        if($check and time()-$lastfeedread>600 and rand(1,100)<25)
+        $crl=curl_init();
+        curl_setopt($crl, CURLOPT_HTTPHEADER,$header);
+        curl_setopt($crl, CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($crl, CURLOPT_URL, $url);
+        curl_setopt($crl, CURLOPT_CONNECTTIMEOUT, 2);
+        $rawcontent = trim(curl_exec($crl));
+        $t=json_decode($rawcontent);
+
+        if(!curl_errno($crl) and $t and json_last_error() === JSON_ERROR_NONE)
         {
-            $crl=curl_init();
-            curl_setopt($crl, CURLOPT_HTTPHEADER,$header);
-            curl_setopt($crl, CURLOPT_RETURNTRANSFER,true);
-            curl_setopt($crl, CURLOPT_URL, $url);
-            curl_setopt($crl, CURLOPT_CONNECTTIMEOUT, 2);
-            $rawcontent = trim(curl_exec($crl));
-            $t=json_decode($rawcontent);
+            // Do any processing here so it's cached.
+            $t->content=array_map("static::fixup",
+                                  $t->content);
 
-            if(!curl_errno($crl) and $t and json_last_error() === JSON_ERROR_NONE)
-            {
-                // Do any processing here so it's cached.
-                $t->content=array_map("static::fixup",
-                                      $t->content);
-
-
-                set_config('feedcache',serialize($t),'block_tcgfeed');
-                set_config('feedtimestamp',time(),'block_tcgfeed');
-            }
+            set_config('feedcache',serialize($t),'block_tcgfeed');
         }
 
         $r=!empty($t) ? $t : unserialize(get_config('block_tcgfeed','feedcache'));
@@ -118,10 +111,17 @@ class block_tcgfeed extends block_base {
         return $r->content;
     }
 
+    static function getfeed()
+    {
+        $t=unserialize(get_config('block_tcgfeed','feedcache'));
+        $r=(empty($t)) ? static::readfeed(): $t->content ;
+        return $r;
+    }
+
     static function alllocations()
     {
         $places=array();
-        foreach(static::filterfeed(false,array('type','area')) as $job)
+        foreach(static::filterfeed(array('type','area')) as $job)
         {
             $v=$job->vacancy;
             foreach($v->places as $location)
@@ -138,7 +138,7 @@ class block_tcgfeed extends block_base {
     static function alltypes()
     {
         $types=array();
-        foreach(static::filterfeed(false,array('location','area')) as $job)
+        foreach(static::filterfeed(array('location','area')) as $job)
         {
             foreach($job->vacancy->type as $type)
             {
@@ -156,7 +156,7 @@ class block_tcgfeed extends block_base {
     static function allareas()
     {
         $areas=array();
-        foreach(static::filterfeed(false,array('type','location')) as $job)
+        foreach(static::filterfeed(array('type','location')) as $job)
         {
             foreach($job->vacancy->occupationalArea as $area)
             {
@@ -206,7 +206,7 @@ class block_tcgfeed extends block_base {
 
         if(static::get_pref('tcgfeed_preferred_sort','ending-sort')==='ending-sort')
         {
-            foreach(static::filterfeed($check) as $j)
+            foreach(static::filterfeed() as $j)
             {
                 $inner.=static::convert_job($j);
                 $i++;
@@ -218,7 +218,7 @@ class block_tcgfeed extends block_base {
         }
         else
         {
-            foreach(static::filterfeed($check) as $j)
+            foreach(static::filterfeed() as $j)
             {
                 $inner.=static::convert_job($j);
                 $i++;
@@ -282,9 +282,9 @@ class block_tcgfeed extends block_base {
         return $value;
     }
 
-    static function filterfeed($check=false,$filters=array('area','type','location'))
+    static function filterfeed($filters=array('area','type','location'))
     {
-        $temp = static::readfeed($check);
+        $temp = static::getfeed();
 
         // Okay. All this is to avoid looping over the feed multiple times.
         // We define a bunch of filters and then
@@ -295,6 +295,7 @@ class block_tcgfeed extends block_base {
         $sector=static::get_pref('tcgfeed_preferred_sector','');
         $type=static::get_pref('tcgfeed_preferred_type','');
         $location=static::get_pref('tcgfeed_preferred_location','');
+
         $nofilter=function($a){return true;};
 
         $today=(int)(time()/86400)*86400;
