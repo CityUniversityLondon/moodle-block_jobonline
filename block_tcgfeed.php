@@ -64,7 +64,7 @@ class block_tcgfeed extends block_base {
         $job->vacancy->places=$t;
 
         $job->vacancy->publishDate=strtotime($job->posting->publishDate);
-        $job->vacancy->unpublishDate=min(strtotime($job->vacancy->closingDate),strtotime($job->vacancy->unpublishDate));
+        $job->vacancy->unpublishDate=min(strtotime($job->vacancy->closingDate),strtotime($job->posting->unpublishDate));
 
         return $job;
     }
