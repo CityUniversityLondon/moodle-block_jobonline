@@ -104,6 +104,7 @@ class block_tcgfeed extends block_base {
                                   $t->content);
 
             set_config('feedcache',serialize($t),'block_tcgfeed');
+            set_config('feedtimestamp',time(),'block_tcgfeed');
         }
 
         $r=!empty($t) ? $t : unserialize(get_config('block_tcgfeed','feedcache'));
