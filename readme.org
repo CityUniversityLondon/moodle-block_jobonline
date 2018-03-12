@@ -1,0 +1,9 @@
+* JobOnline Block
+** Overview
+University of London's JobOnline block presents a list of jobs in the form of a Moodle block which can be placed in the standard locations or the top of a main content area in themes which do not support central blocks.
+
+** Installation
+Install the block in the normal place (blocks/jobonline) and run notifications from the system administration menu.
+** Configuration
+The block has several configuration options, two of which are required:
+-

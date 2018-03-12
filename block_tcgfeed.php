@@ -17,13 +17,13 @@
 /**
  * This file contains the parent class for moodle blocks, block_base.
  *
- * @package    tcgfeed
+ * @package    jobonline
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  */
 
 require_once(__DIR__."/../moodleblock.class.php");
 
-class block_tcgfeed extends block_base {
+class block_jobonline extends block_base {
 
     static $stringmanager=null;
 
@@ -74,8 +74,8 @@ class block_tcgfeed extends block_base {
      */
     static function readfeed()
     {
-        $password=get_config('block_tcgfeed','feedpassword');
-        $url=get_config('block_tcgfeed','feedurl');
+        $password=get_config('block_jobonline','feedpassword');
+        $url=get_config('block_jobonline','feedurl');
 
         if(empty($password) or empty($url))
         {
@@ -103,18 +103,18 @@ class block_tcgfeed extends block_base {
             $t->content=array_map("static::fixup",
                                   $t->content);
 
-            set_config('feedcache',serialize($t),'block_tcgfeed');
-            set_config('feedtimestamp',time(),'block_tcgfeed');
+            set_config('feedcache',serialize($t),'block_jobonline');
+            set_config('feedtimestamp',time(),'block_jobonline');
         }
 
-        $r=!empty($t) ? $t : unserialize(get_config('block_tcgfeed','feedcache'));
+        $r=!empty($t) ? $t : unserialize(get_config('block_jobonline','feedcache'));
 
         return $r->content;
     }
 
     static function getfeed()
     {
-        $t=unserialize(get_config('block_tcgfeed','feedcache'));
+        $t=unserialize(get_config('block_jobonline','feedcache'));
         $r=(empty($t)) ? static::readfeed(): $t->content ;
         return $r;
     }
@@ -133,7 +133,7 @@ class block_tcgfeed extends block_base {
 
         $t=array_keys($places);
 
-        return static::prioritise_array($t,get_config('block_tcgfeed','locationlist'));
+        return static::prioritise_array($t,get_config('block_jobonline','locationlist'));
     }
 
     static function alltypes()
@@ -167,7 +167,7 @@ class block_tcgfeed extends block_base {
 
         // array_keys() can't be passed directly
         $t=array_keys($areas);
-        return static::prioritise_array($t,get_config('block_tcgfeed','sectorlist'));
+        return static::prioritise_array($t,get_config('block_jobonline','sectorlist'));
     }
 
     // priorities is a bar-delimited string
@@ -199,13 +199,13 @@ class block_tcgfeed extends block_base {
 
         $content='';
         $inner='';
-        $maxjobs=(int)get_config('block_tcgfeed','listsize');
+        $maxjobs=(int)get_config('block_jobonline','listsize');
 
-        $cutoffdate=time()+get_config('block_tcgfeed','feedcutoff');
+        $cutoffdate=time()+get_config('block_jobonline','feedcutoff');
 
         $i=0;
 
-        if(static::get_pref('tcgfeed_preferred_sort','ending-sort')==='ending-sort')
+        if(static::get_pref('jobonline_preferred_sort','ending-sort')==='ending-sort')
         {
             foreach(static::filterfeed() as $j)
             {
@@ -237,14 +237,14 @@ class block_tcgfeed extends block_base {
     static function make_pref($name)
     {
         global $SESSION;
-        if(!isset($SESSION->block_tcgfeed))
+        if(!isset($SESSION->block_jobonline))
         {
-            $SESSION->block_tcgfeed=new stdClass;
+            $SESSION->block_jobonline=new stdClass;
         }
 
-        if(!isset($SESSION->block_tcgfeed->$name))
+        if(!isset($SESSION->block_jobonline->$name))
         {
-            $SESSION->block_tcgfeed->$name=null;
+            $SESSION->block_jobonline->$name=null;
         }
     }
 
@@ -254,14 +254,14 @@ class block_tcgfeed extends block_base {
 
         static::make_pref($name);
 
-        if(!is_null($SESSION->block_tcgfeed->$name))
+        if(!is_null($SESSION->block_jobonline->$name))
         {
-            $v=$SESSION->block_tcgfeed->$name;
+            $v=$SESSION->block_jobonline->$name;
         }
         else
         {
             $v=get_user_preferences($name,$default);
-            $SESSION->block_tcgfeed->$name=$v;
+            $SESSION->block_jobonline->$name=$v;
         }
 
         return strtolower(trim($v));
@@ -274,7 +274,7 @@ class block_tcgfeed extends block_base {
         static::make_pref($name);
         $value=strtolower(trim($value));
 
-        $SESSION->block_tcgfeed->$name=$value;
+        $SESSION->block_jobonline->$name=$value;
         if(!isguestuser())
         {
             set_user_preference($name, $value);
@@ -293,9 +293,9 @@ class block_tcgfeed extends block_base {
         // hasn't selected gets defined as always returning true; we can't use just 'true'
         // as the function needs to take a parameter.
 
-        $sector=static::get_pref('tcgfeed_preferred_sector','');
-        $type=static::get_pref('tcgfeed_preferred_type','');
-        $location=static::get_pref('tcgfeed_preferred_location','');
+        $sector=static::get_pref('jobonline_preferred_sector','');
+        $type=static::get_pref('jobonline_preferred_type','');
+        $location=static::get_pref('jobonline_preferred_location','');
 
         $nofilter=function($a){return true;};
 
@@ -357,7 +357,7 @@ class block_tcgfeed extends block_base {
             );
         }
 
-        if(static::get_pref('tcgfeed_preferred_sort','ending-sort')==='ending-sort')
+        if(static::get_pref('jobonline_preferred_sort','ending-sort')==='ending-sort')
         {
             usort($temp,function($a,$b){return $a->vacancy->closingDate > $b->vacancy->closingDate;});
         }
@@ -403,7 +403,7 @@ class block_tcgfeed extends block_base {
         }
         elseif(!empty($job->vacancy->applicationUrl) and !empty($job->vacancy->applicationUrl->link))
         {
-            $applicationlinkname=static::$stringmanager->get_string('applicationlinkname','block_tcgfeed');
+            $applicationlinkname=static::$stringmanager->get_string('applicationlinkname','block_jobonline');
             $applicationlink=$job->vacancy->applicationUrl->link;
             $application="<a href='$applicationlink' target=_blank>$applicationlinkname</a>";
         }
@@ -433,8 +433,8 @@ class block_tcgfeed extends block_base {
             $replacement='Not given';
         }
 
-        $label=static::$stringmanager->string_exists("${field}_label",'block_tcgfeed')?
-              get_string("${field}_label",'block_tcgfeed'):
+        $label=static::$stringmanager->string_exists("${field}_label",'block_jobonline')?
+              get_string("${field}_label",'block_jobonline'):
               ucfirst("$field:");
 
         $template=str_replace("<<${field}_label>>",$label,$template);
@@ -475,7 +475,7 @@ class block_tcgfeed extends block_base {
 
     function init()
     {
-        $this->title=get_string('pluginname','block_tcgfeed');
+        $this->title=get_string('pluginname','block_jobonline');
     }
 
     /**
@@ -679,8 +679,8 @@ class block_tcgfeed extends block_base {
         global $PAGE;
         parent::get_required_javascript();
 
-        $PAGE->requires->js('/blocks/tcgfeed/js/block_tcgfeed.js');
-        $PAGE->requires->js_init_call('M.block_tcgfeed.init');
+        $PAGE->requires->js('/blocks/jobonline/js/block_jobonline.js');
+        $PAGE->requires->js_init_call('M.block_jobonline.init');
     }
 
     /**

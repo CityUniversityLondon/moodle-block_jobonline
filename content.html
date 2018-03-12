@@ -1,13 +1,13 @@
 <?php ob_start();
 global $USER;
 ?>
-<div id='tcgblockwrapper' bounce="<?=get_config('block_tcgfeed','bounce')?>">
+<div id='jobonlineblockwrapper' bounce="<?=get_config('block_jobonline','bounce')?>">
     <form>
-        <select onchange='M.block_tcgfeed.settype(this,"<?= $USER->id?>");'>
+        <select onchange='M.block_jobonline.settype(this,"<?= $USER->id?>");'>
             <option value=''>Any type</option>
             <?php
-            $preset=block_tcgfeed::get_pref('tcgfeed_preferred_type','');
-            foreach(block_tcgfeed::alltypes() as $type)
+            $preset=block_jobonline::get_pref('jobonline_preferred_type','');
+            foreach(block_jobonline::alltypes() as $type)
             {
                 print "<option value='$type'";
                 if(strtolower($type)===$preset)
@@ -18,13 +18,13 @@ global $USER;
             }
             ?>
         </select>
-        <select onchange='M.block_tcgfeed.setsector(this,"<?= $USER->id?>");'>
+        <select onchange='M.block_jobonline.setsector(this,"<?= $USER->id?>");'>
             <option value="">Any Sector</option>
             <?php
 
-            $preset=block_tcgfeed::get_pref('tcgfeed_preferred_sector','');
+            $preset=block_jobonline::get_pref('jobonline_preferred_sector','');
 
-            foreach(block_tcgfeed::allareas() as $sector)
+            foreach(block_jobonline::allareas() as $sector)
             {
                 $s=trim($sector);
                 print "<option value='$s'";
@@ -36,23 +36,23 @@ global $USER;
             }
             ?>
         </select>
-        <div id='tcgfeed_sortbuttons'>
-            <table width="100%"><tr><td class='tcg_sortbycell'>Sort&nbsp;By:</td>
+        <div id='jobonline_sortbuttons'>
+            <table width="100%"><tr><td class='jobonline_sortbycell'>Sort&nbsp;By:</td>
                 <?php
-                $preset=block_tcgfeed::get_pref('tcgfeed_preferred_sort','ending-sort');
-                foreach(array('ending-sort'=>static::$stringmanager->get_string('ending-sort','block_tcgfeed'),
-                'post-sort'=>static::$stringmanager->get_string('post-sort','block_tcgfeed')) as $val=>$display)
+                $preset=block_jobonline::get_pref('jobonline_preferred_sort','ending-sort');
+                foreach(array('ending-sort'=>static::$stringmanager->get_string('ending-sort','block_jobonline'),
+                'post-sort'=>static::$stringmanager->get_string('post-sort','block_jobonline')) as $val=>$display)
                 {
-                    print "<td class='tcg_radiobtn'><input type=radio name='sortdir' value='$val'";
+                    print "<td class='jobonline_radiobtn'><input type=radio name='sortdir' value='$val'";
                     if ($val===$preset)
                         print " checked";
-                    print " onchange='M.block_tcgfeed.setsort(this,\"$USER->id\");'>$display</td>";
+                    print " onchange='M.block_jobonline.setsort(this,\"$USER->id\");'>$display</td>";
                 }
                 ?>
-                <td class='tcg_location'><select onchange='M.block_tcgfeed.setlocation(this,"<?= $USER->id?>");'><option value="">Any location</option>
+                <td class='jobonline_location'><select onchange='M.block_jobonline.setlocation(this,"<?= $USER->id?>");'><option value="">Any location</option>
                     <?php
-                    $preset=block_tcgfeed::get_pref('tcgfeed_preferred_location','');
-                    foreach(block_tcgfeed::alllocations() as $place)
+                    $preset=block_jobonline::get_pref('jobonline_preferred_location','');
+                    foreach(block_jobonline::alllocations() as $place)
                     {
                         $p=trim($place);
                         print "<option value='$p'";

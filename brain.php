@@ -5,7 +5,7 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 ///define('AJAX_SCRIPT', true);
 
 require_once('../../config.php');
-require_once(__DIR__."/block_tcgfeed.php");
+require_once(__DIR__."/block_jobonline.php");
 
 //require_login(0,false);
 
@@ -34,10 +34,10 @@ function update_sector()
 
    if($USER
       and ($sector===''
-           or in_array($sector,block_tcgfeed::allareas())))
+           or in_array($sector,block_jobonline::allareas())))
    {
-       block_tcgfeed::set_pref('tcgfeed_preferred_sector',strtolower($sector));
-       print block_tcgfeed::buildcontents(true);
+       block_jobonline::set_pref('jobonline_preferred_sector',strtolower($sector));
+       print block_jobonline::buildcontents(true);
    }
    else
    {
@@ -59,10 +59,10 @@ function update_location()
 
    if($USER
       and ($location===''
-           or in_array($location,block_tcgfeed::alllocations())))
+           or in_array($location,block_jobonline::alllocations())))
    {
-       block_tcgfeed::set_pref('tcgfeed_preferred_location',strtolower($location));
-       print block_tcgfeed::buildcontents(true);
+       block_jobonline::set_pref('jobonline_preferred_location',strtolower($location));
+       print block_jobonline::buildcontents(true);
    }
    else
    {
@@ -84,8 +84,8 @@ function update_type()
 
    if($USER)
    {
-       block_tcgfeed::set_pref('tcgfeed_preferred_type',strtolower($type));
-       print block_tcgfeed::buildcontents(true);
+       block_jobonline::set_pref('jobonline_preferred_type',strtolower($type));
+       print block_jobonline::buildcontents(true);
    }
    else
    {
@@ -108,8 +108,8 @@ function update_sort()
    if($USER
       and in_array($sort,array('ending-sort','post-sort')))
    {
-       block_tcgfeed::set_pref('tcgfeed_preferred_sort',$sort);
-       print block_tcgfeed::buildcontents(true);
+       block_jobonline::set_pref('jobonline_preferred_sort',$sort);
+       print block_jobonline::buildcontents(true);
    }
    else
    {
