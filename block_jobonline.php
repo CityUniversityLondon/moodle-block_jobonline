@@ -356,6 +356,10 @@ class block_jobonline extends block_base {
                                }
             );
         }
+        else
+        {
+            $temp=array_filter($temp,$datefilter);
+        }
 
         if(static::get_pref('jobonline_preferred_sort','ending-sort')==='ending-sort')
         {
