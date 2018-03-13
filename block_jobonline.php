@@ -403,7 +403,8 @@ class block_jobonline extends block_base {
         if(!empty($job->vacancy->applicationEmail))
         {
             @$name=$job->vacancy->contact[0]->givenName.' '. $job->vacancy->contact[0]->familyName;
-            $application="$name <<a href='mailto:{$job->vacancy->applicationEmail}'>{$job->vacancy->applicationEmail}</a>>";
+            $subject=htmlspecialchars("$job->vacancy->title Application");
+            $application="$name <<a href='mailto:{$job->vacancy->applicationEmail}?subject=$subject'>{$job->vacancy->applicationEmail}</a>>";
         }
         elseif(!empty($job->vacancy->applicationUrl) and !empty($job->vacancy->applicationUrl->link))
         {
