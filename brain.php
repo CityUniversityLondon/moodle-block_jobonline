@@ -37,7 +37,7 @@ function update_sector()
            or in_array($sector,block_jobonline::allareas())))
    {
        block_jobonline::set_pref('jobonline_preferred_sector',strtolower($sector));
-       print block_jobonline::buildcontents(true);
+       print block_jobonline::buildcontents();
    }
    else
    {
@@ -62,7 +62,7 @@ function update_location()
            or in_array($location,block_jobonline::alllocations())))
    {
        block_jobonline::set_pref('jobonline_preferred_location',strtolower($location));
-       print block_jobonline::buildcontents(true);
+       print block_jobonline::buildcontents();
    }
    else
    {
@@ -85,7 +85,7 @@ function update_type()
    if($USER)
    {
        block_jobonline::set_pref('jobonline_preferred_type',strtolower($type));
-       print block_jobonline::buildcontents(true);
+       print block_jobonline::buildcontents();
    }
    else
    {
@@ -109,7 +109,7 @@ function update_sort()
       and in_array($sort,array('ending-sort','post-sort')))
    {
        block_jobonline::set_pref('jobonline_preferred_sort',$sort);
-       print block_jobonline::buildcontents(true);
+       print block_jobonline::buildcontents();
    }
    else
    {

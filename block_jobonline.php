@@ -193,7 +193,7 @@ class block_jobonline extends block_base {
         return $array;
     }
 
-    static function buildcontents($check=false)
+    static function buildcontents()
     {
         static::$stringmanager=get_string_manager();
 
