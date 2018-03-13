@@ -177,24 +177,37 @@ The block can be used as a normal Moodle marginal block, and works well as such.
    #+CAPTION: Adding a course
    [[./docimages/createcourse1.png]]
    #+CAPTION: Creating the course: general settings
-   [[./docimages/createcourse2.png]]
+   [[./docimages/createcourse3.png]]
 2. Set the format to "Topics format"
    a. Number of sections to zero
    b. Hidden sections to "completely invisible"
+   #+CAPTION: Creating the course: topics settings
+   [[./docimages/topics.png]]
 3. Click on "Save and Display"
    This takes you to the enrolment page, but ignore that for now.
-4. "Proceed to course content"
+4. Click on "Proceed to course content"
 5. "Turn editing on"
+   #+CAPTION: Turn editing on button
+   [[./docimages/turneditingon.png]]
 6. Use the "Add a block" dropdown to select "JobOnline Block
+   #+CAPTION: Adding the block
+   [[./docimages/addblock.png]]
    a. If you have "Bounce into centre" on in the settings then you should immediately see the block appear in the main content section of the course.
    b. If not, then the block will appear in the margin with the other blocks and can be moved around like any other block.
+      #+CAPTION: Block displayed in margin
+     [[./docimages/nobounce.png]]
 7. You will probably want to turn on guest access to this course so that students can access it without being enrolled on it. Note that this is distinct from allowing guest access to the Moodle site.
 
 The course as set up here will still have a default news forum (probably called "Announcements"). This can be hidden if desired.
+#+CAPTION: No news is good news
+[[./docimages/hidenews.png]]
 *** User view
 The usage of the block for the student is fairly straight-forward. The filters are set according to the drop down menus for contract type, sector, and location and a list of posts is displayed. Notice that the contents of each menu react to the settings in the others. Sorting can be with the most recent postings first, or with the most imminent closing dates first.
 
 For example, if the user is only interested in Yorkshire, the contract type and sector menus will only display types and sectors which actually exist in the database for Yorkshire. Similarly, a user looking for graduate schemes in HR will only see a list of locations where any such schemes are available.
+
+#+CAPTION: Combining filters
+[[./docimages/schemes.png]]
 
 The main display lists the job title followed by all the contract types available for that post in brackets, and ends with the closing date. The date shown is always the closing date, even if sorting by recent posts.
 
