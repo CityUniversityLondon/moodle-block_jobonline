@@ -9,8 +9,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname']='JobOnline Opportunities Block';
-$string['pluginnameplural'] = 'JobOnline Opportunities Blocks';
+$string['pluginname']='JobOnline Block';
+$string['pluginnameplural'] = 'JobOnline Blocks';
 
 $string['bounce']='Bounce block into centre';
 $string['bounce_description']='If selected, the block will force its way into the main content part of any page it appears on. When not selected, it acts like any other block in the current theme.';
@@ -43,3 +43,4 @@ $string['ending-sort']='Closing Soon';
 $string['post-sort']='Newly listed';
 
 $string['general_cron']='JobOnline Feed Refresh';
+$string['notsetup']='JobOnline not configured, check <a href="/admin/settings.php?section=blocksettingjobonline">url and/or password settings</a>.';

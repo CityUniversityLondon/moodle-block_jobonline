@@ -524,7 +524,18 @@ class block_jobonline extends block_base {
         }
 
         $this->content = new stdClass;
-        $this->content->text = static::buildcontents();
+
+        $password=get_config('block_jobonline','feedpassword');
+        $url=get_config('block_jobonline','feedurl');
+
+        if(empty($password) or empty($url))
+        {
+            $this->content->text = get_string('notsetup','block_jobonline');
+        }
+        else
+        {
+            $this->content->text = static::buildcontents();
+        }
     }
 
     /**
