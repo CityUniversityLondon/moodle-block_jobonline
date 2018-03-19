@@ -4,7 +4,7 @@
 #+SUBTITLE: Released under the GPL ©2018 University of London
 
 * Overview
-University of London's JobOnline block presents a list of jobs in the form of a Moodle block which can be placed in the standard locations or the top of a main content area in themes which do not support central blocks.
+University of London's JobOnline block presents a list of jobs in the form of a Moodle block which can be placed in the standard locations or the top of a main content area in themes which do not support central blocks. The jobs are managed and distributed using software (TARGETconnect) provided by Group GTI through a contract with The Careers Group. GTI have built a data feed specifically for The Careers Group to make available to member institutions through Moodle.
 
 * Installation
 Install the block in the normal place (blocks/jobonline) and run notifications from the system administration menu.
@@ -16,7 +16,7 @@ The block has several configuration options, two of which are required for norma
 ** Jobs Feed Url.
 This is simply the source of the jobs data and will be provided to you by the Careers Group at the University of London.
 ** Password for jobs feed.
-This will be provided to you separately by the Careers Group.
+This will be provided to you separately by the Careers Group, who will request it from Group GTI.
 
 As well as these required settings, there are several options which can be left at their defaults or adjusted to specific needs:
 ** Bounce block into centre
