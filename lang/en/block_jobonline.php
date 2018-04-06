@@ -18,6 +18,9 @@ $string['bounce_description']='If selected, the block will force its way into th
 $string['feedurl']='Jobs Feed Url';
 $string['feedurl_description']='The full url of the jobs feed, including the "HTTP" or "HTTPS" part.';
 
+$string['feedusername']='User name for job feed.';
+$string['feedusername_description']='This should be the raw text, not the base64 version.';
+
 $string['feedpassword']='Password for job feed.';
 $string['feedpassword_description']='This should be the raw text, not the base64 version.';
 

@@ -21,6 +21,8 @@ $settings->add(new admin_setting_configcheckbox('block_jobonline/bounce',
 
 $settings->add(new admin_setting_configtext('block_jobonline/feedurl',get_string('feedurl','block_jobonline'),get_string('feedurl_description','block_jobonline'),'',PARAM_URL));
 
+$settings->add(new admin_setting_configpasswordunmask('block_jobonline/feedusername',get_string('feedusername','block_jobonline'),get_string('feedusername_description','block_jobonline'),"",PARAM_RAW,64));
+
 $settings->add(new admin_setting_configpasswordunmask('block_jobonline/feedpassword',get_string('feedpassword','block_jobonline'),get_string('feedpassword_description','block_jobonline'),"",PARAM_RAW,64));
 
 $settings->add(new admin_setting_configtextarea('block_jobonline/sectorlist',

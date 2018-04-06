@@ -75,6 +75,7 @@ class block_jobonline extends block_base {
     static function readfeed()
     {
         $password=get_config('block_jobonline','feedpassword');
+        $username=get_config('block_jobonline','feedusername');
         $url=get_config('block_jobonline','feedurl');
 
         if(empty($password) or empty($url))
@@ -84,7 +85,14 @@ class block_jobonline extends block_base {
 
         $header=array();
         $header[]='Accept: application/json';
-        $header[]='Authorization: Basic '.base64_encode($password);
+        if(!empty($username))
+        {
+            $header[]='Authorization: Basic '.base64_encode("$username:$password");
+        }
+        else
+        {
+            $header[]='Authorization: Basic '.base64_encode($password);
+        }
         $header[]='User-Agent: Moodle';
 
         $t=array();
@@ -97,7 +105,10 @@ class block_jobonline extends block_base {
         $rawcontent = trim(curl_exec($crl));
         $t=json_decode($rawcontent);
 
-        if(!curl_errno($crl) and $t and json_last_error() === JSON_ERROR_NONE)
+        if(!curl_errno($crl) and
+           $t and
+           json_last_error() === JSON_ERROR_NONE and
+           empty($t->http_status_code))
         {
             // Do any processing here so it's cached.
             $t->content=array_map("static::fixup",
@@ -105,6 +116,10 @@ class block_jobonline extends block_base {
 
             set_config('feedcache',serialize($t),'block_jobonline');
             set_config('feedtimestamp',time(),'block_jobonline');
+        }
+        else
+        {
+            $t='';
         }
 
         $r=!empty($t) ? $t : unserialize(get_config('block_jobonline','feedcache'));

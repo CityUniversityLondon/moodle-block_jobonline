@@ -8,6 +8,7 @@ University of London's JobOnline block presents a list of jobs in the form of a 
 
 * Installation
 Install the block in the normal place (blocks/jobonline) and run notifications from the system administration menu.
+
 * Configuration
 The block has several configuration options, two of which are required for normal working.
   #+CAPTION: Main block settings
@@ -15,10 +16,11 @@ The block has several configuration options, two of which are required for norma
 
 ** Jobs Feed Url.
 This is simply the source of the jobs data and will be provided to you by the Careers Group at the University of London.
+** User name for jobs feed.
+This will be provided to you separately by the Careers Group, who will request it from Group GTI.
+As well as these required settings, there are several options which can be left at their defaults or adjusted to specific needs:
 ** Password for jobs feed.
 This will be provided to you separately by the Careers Group, who will request it from Group GTI.
-
-As well as these required settings, there are several options which can be left at their defaults or adjusted to specific needs:
 ** Bounce block into centre
 The expected use of the block is as a single item in the main content of a page dedicated to it. However, not all Moodle themes support placing a block in the main area of a page and so some Javascript has been added to the block to allow it to force itself into that area even if the theme does not officially allow it.
 
