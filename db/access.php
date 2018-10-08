@@ -17,7 +17,7 @@
 /**
  * Calendar month block caps.
  *
- * @package    jobonline
+ * @package    jobonlinesecondary
  * @copyright  2018 University of London
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
 
-    'block/jobonline:myaddinstance' => array(
+    'block/jobonlinesecondary:myaddinstance' => array(
         'captype' => 'write',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => array(
@@ -36,7 +36,7 @@ $capabilities = array(
         'clonepermissionsfrom' => 'moodle/my:manageblocks'
     ),
 
-    'block/jobonline:addinstance' => array(
+    'block/jobonlinesecondary:addinstance' => array(
         'riskbitmask' => RISK_SPAM | RISK_XSS,
 
         'captype' => 'write',

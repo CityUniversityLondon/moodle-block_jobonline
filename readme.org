@@ -1,13 +1,15 @@
 #+OPTIONS: toc:t
-#+TITLE: JobOnline Block Documentation
+#+TITLE: Jobonlinesecondary Block Documentation
 #+AUTHOR: Thomas Worthington
 #+SUBTITLE: Released under the GPL ©2018 University of London
 
 * Overview
-University of London's JobOnline block presents a list of jobs in the form of a Moodle block which can be placed in the standard locations or the top of a main content area in themes which do not support central blocks. The jobs are managed and distributed using software (TARGETconnect) provided by Group GTI through a contract with The Careers Group. GTI have built a data feed specifically for The Careers Group to make available to member institutions through Moodle.
+University of London's Jobonlinesecondary block presents a list of jobs in the form of a Moodle block which can be placed in the standard locations or the top of a main content area in themes which do not support central blocks. The jobs are managed and distributed using software (TARGETconnect) provided by Group GTI through a contract with The Careers Group. GTI have built a data feed specifically for The Careers Group to make available to member institutions through Moodle.
+
+*This branch* is a quick copy of the main block which allows for a second feed with its own parameters to be set up on the same Moodle.
 
 * Installation
-Install the block in the normal place (blocks/jobonline) and run notifications from the system administration menu.
+Install the block in the normal place (blocks/jobonlinesecondary) and run notifications from the system administration menu.
 
 * Configuration
 The block has several configuration options, two of which are required for normal working.
@@ -202,7 +204,7 @@ The block can be used as a normal Moodle marginal block, and works well as such.
 5. "Turn editing on"
    #+CAPTION: Turn editing on button
    [[./docimages/turneditingon.png]]
-6. Use the "Add a block" dropdown to select "JobOnline Block
+6. Use the "Add a block" dropdown to select "Jobonlinesecondary Block
    #+CAPTION: Adding the block
    [[./docimages/addblock.png]]
    a. If you have "Bounce into centre" on in the settings then you should immediately see the block appear in the main content section of the course.

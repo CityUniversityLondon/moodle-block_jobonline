@@ -1,16 +1,16 @@
-M.block_jobonline =
+M.block_jobonlinesecondary =
     {
         init: function()
         {
-            var me=document.getElementById('jobonlineblockwrapper');
+            var me=document.getElementById('jobonlinesecondaryblockwrapper');
 
-            this.lockdown(document.getElementById('jobonlineblockwrapper'));
+            this.lockdown(document.getElementById('jobonlinesecondaryblockwrapper'));
 
-            console.log('block_jobonline js loaded and locked');
+            console.log('block_jobonlinesecondary js loaded and locked');
 
             if(me.getAttributeNode('bounce').value==='1')
             {
-                var me=document.getElementsByClassName('block_jobonline')[0];
+                var me=document.getElementsByClassName('block_jobonlinesecondary')[0];
                 var tgt=document.getElementsByClassName('course-content')[0];
                 tgt.insertBefore(me,tgt.firstChild);
             }
@@ -39,7 +39,7 @@ M.block_jobonline =
             if(!event.ctrlKey) //Hold down ctrl to NOT close other jobs
             {
                 var temp=me.getAttributeNode('state').value;
-                var elements=document.getElementsByClassName('jobonline_job');
+                var elements=document.getElementsByClassName('jobonlinesecondary_job');
                 for(i=0;i<elements.length;i++)
                 {
                     elements[i].getAttributeNode('state').value=0;
@@ -67,7 +67,7 @@ M.block_jobonline =
                 {
                     if (r.status === 200)
                     {
-                        M.block_jobonline.updateitem(obj,r.responseText);
+                        M.block_jobonlinesecondary.updateitem(obj,r.responseText);
                     }
                 }
                 obj.style.filter='blur(0px)';
@@ -83,31 +83,31 @@ M.block_jobonline =
                 obj.style.filter='blur(0px)';
             }
 
-            r.open('GET','/blocks/jobonline/brain.php?fn='+func+'&'+encodeURI(params)+'&'+Date.now());
+            r.open('GET','/blocks/jobonlinesecondary/brain.php?fn='+func+'&'+encodeURI(params)+'&'+Date.now());
             r.send(null);
         },
 
         setlocation: function(obj,user)
         {
-            this.setitem(document.getElementById('jobonlineblockwrapper'),'update_location',
+            this.setitem(document.getElementById('jobonlinesecondaryblockwrapper'),'update_location',
                          ['user='+user,'location='+obj.value].join('&'));
         },
 
         setsector: function(obj,user)
         {
-            this.setitem(document.getElementById('jobonlineblockwrapper'),'update_sector',
+            this.setitem(document.getElementById('jobonlinesecondaryblockwrapper'),'update_sector',
                          ['user='+user,'sector='+obj.value].join('&'));
         },
 
         settype: function(obj,user)
         {
-            this.setitem(document.getElementById('jobonlineblockwrapper'),'update_type',
+            this.setitem(document.getElementById('jobonlinesecondaryblockwrapper'),'update_type',
                          ['user='+user,'type='+obj.value].join('&'));
         },
 
         setsort: function(obj,user)
         {
-            this.setitem(document.getElementById('jobonlineblockwrapper'),'update_sort',
+            this.setitem(document.getElementById('jobonlinesecondaryblockwrapper'),'update_sort',
                          ['user='+user,'sort='+obj.value].join('&'));
         },
 

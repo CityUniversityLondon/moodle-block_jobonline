@@ -17,13 +17,13 @@
 /**
  * This file contains the parent class for moodle blocks, block_base.
  *
- * @package    jobonline
+ * @package    jobonlinesecondary
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  */
 
 require_once(__DIR__."/../moodleblock.class.php");
 
-class block_jobonline extends block_base {
+class block_jobonlinesecondary extends block_base {
 
     static $stringmanager=null;
 
@@ -74,9 +74,9 @@ class block_jobonline extends block_base {
      */
     static function readfeed()
     {
-        $password=get_config('block_jobonline','feedpassword');
-        $username=get_config('block_jobonline','feedusername');
-        $url=get_config('block_jobonline','feedurl');
+        $password=get_config('block_jobonlinesecondary','feedpassword');
+        $username=get_config('block_jobonlinesecondary','feedusername');
+        $url=get_config('block_jobonlinesecondary','feedurl');
 
         if(empty($password) or empty($url))
         {
@@ -114,22 +114,22 @@ class block_jobonline extends block_base {
             $t->content=array_map("static::fixup",
                                   $t->content);
 
-            set_config('feedcache',serialize($t),'block_jobonline');
-            set_config('feedtimestamp',time(),'block_jobonline');
+            set_config('feedcache',serialize($t),'block_jobonlinesecondary');
+            set_config('feedtimestamp',time(),'block_jobonlinesecondary');
         }
         else
         {
             $t='';
         }
 
-        $r=!empty($t) ? $t : unserialize(get_config('block_jobonline','feedcache'));
+        $r=!empty($t) ? $t : unserialize(get_config('block_jobonlinesecondary','feedcache'));
 
         return $r->content;
     }
 
     static function getfeed()
     {
-        $t=unserialize(get_config('block_jobonline','feedcache'));
+        $t=unserialize(get_config('block_jobonlinesecondary','feedcache'));
         $r=(empty($t)) ? static::readfeed(): $t->content ;
         return $r;
     }
@@ -148,7 +148,7 @@ class block_jobonline extends block_base {
 
         $t=array_keys($places);
 
-        return static::prioritise_array($t,get_config('block_jobonline','locationlist'));
+        return static::prioritise_array($t,get_config('block_jobonlinesecondary','locationlist'));
     }
 
     static function alltypes()
@@ -182,7 +182,7 @@ class block_jobonline extends block_base {
 
         // array_keys() can't be passed directly
         $t=array_keys($areas);
-        return static::prioritise_array($t,get_config('block_jobonline','sectorlist'));
+        return static::prioritise_array($t,get_config('block_jobonlinesecondary','sectorlist'));
     }
 
     // priorities is a bar-delimited string
@@ -214,13 +214,13 @@ class block_jobonline extends block_base {
 
         $content='';
         $inner='';
-        $maxjobs=(int)get_config('block_jobonline','listsize');
+        $maxjobs=(int)get_config('block_jobonlinesecondary','listsize');
 
-        $cutoffdate=time()+get_config('block_jobonline','feedcutoff');
+        $cutoffdate=time()+get_config('block_jobonlinesecondary','feedcutoff');
 
         $i=0;
 
-        if(static::get_pref('jobonline_preferred_sort','ending-sort')==='ending-sort')
+        if(static::get_pref('jobonlinesecondary_preferred_sort','ending-sort')==='ending-sort')
         {
             foreach(static::filterfeed() as $j)
             {
@@ -252,14 +252,14 @@ class block_jobonline extends block_base {
     static function make_pref($name)
     {
         global $SESSION;
-        if(!isset($SESSION->block_jobonline))
+        if(!isset($SESSION->block_jobonlinesecondary))
         {
-            $SESSION->block_jobonline=new stdClass;
+            $SESSION->block_jobonlinesecondary=new stdClass;
         }
 
-        if(!isset($SESSION->block_jobonline->$name))
+        if(!isset($SESSION->block_jobonlinesecondary->$name))
         {
-            $SESSION->block_jobonline->$name=null;
+            $SESSION->block_jobonlinesecondary->$name=null;
         }
     }
 
@@ -269,14 +269,14 @@ class block_jobonline extends block_base {
 
         static::make_pref($name);
 
-        if(!is_null($SESSION->block_jobonline->$name))
+        if(!is_null($SESSION->block_jobonlinesecondary->$name))
         {
-            $v=$SESSION->block_jobonline->$name;
+            $v=$SESSION->block_jobonlinesecondary->$name;
         }
         else
         {
             $v=get_user_preferences($name,$default);
-            $SESSION->block_jobonline->$name=$v;
+            $SESSION->block_jobonlinesecondary->$name=$v;
         }
 
         return strtolower(trim($v));
@@ -289,7 +289,7 @@ class block_jobonline extends block_base {
         static::make_pref($name);
         $value=strtolower(trim($value));
 
-        $SESSION->block_jobonline->$name=$value;
+        $SESSION->block_jobonlinesecondary->$name=$value;
         if(!isguestuser())
         {
             set_user_preference($name, $value);
@@ -308,9 +308,9 @@ class block_jobonline extends block_base {
         // hasn't selected gets defined as always returning true; we can't use just 'true'
         // as the function needs to take a parameter.
 
-        $sector=static::get_pref('jobonline_preferred_sector','');
-        $type=static::get_pref('jobonline_preferred_type','');
-        $location=static::get_pref('jobonline_preferred_location','');
+        $sector=static::get_pref('jobonlinesecondary_preferred_sector','');
+        $type=static::get_pref('jobonlinesecondary_preferred_type','');
+        $location=static::get_pref('jobonlinesecondary_preferred_location','');
 
         $nofilter=function($a){return true;};
 
@@ -376,7 +376,7 @@ class block_jobonline extends block_base {
             $temp=array_filter($temp,$datefilter);
         }
 
-        if(static::get_pref('jobonline_preferred_sort','ending-sort')==='ending-sort')
+        if(static::get_pref('jobonlinesecondary_preferred_sort','ending-sort')==='ending-sort')
         {
             usort($temp,function($a,$b){return $a->vacancy->closingDate > $b->vacancy->closingDate;});
         }
@@ -423,7 +423,7 @@ class block_jobonline extends block_base {
         }
         elseif(!empty($job->vacancy->applicationUrl) and !empty($job->vacancy->applicationUrl->link))
         {
-            $applicationlinkname=static::$stringmanager->get_string('applicationlinkname','block_jobonline');
+            $applicationlinkname=static::$stringmanager->get_string('applicationlinkname','block_jobonlinesecondary');
             $applicationlink=$job->vacancy->applicationUrl->link;
             $application="<a href='$applicationlink' target=_blank>$applicationlinkname</a>";
         }
@@ -453,8 +453,8 @@ class block_jobonline extends block_base {
             $replacement='Not given';
         }
 
-        $label=static::$stringmanager->string_exists("${field}_label",'block_jobonline')?
-              get_string("${field}_label",'block_jobonline'):
+        $label=static::$stringmanager->string_exists("${field}_label",'block_jobonlinesecondary')?
+              get_string("${field}_label",'block_jobonlinesecondary'):
               ucfirst("$field:");
 
         $template=str_replace("<<${field}_label>>",$label,$template);
@@ -495,7 +495,7 @@ class block_jobonline extends block_base {
 
     function init()
     {
-        $this->title=get_string('pluginname','block_jobonline');
+        $this->title=get_string('pluginname','block_jobonlinesecondary');
     }
 
     /**
@@ -541,12 +541,12 @@ class block_jobonline extends block_base {
 
         $this->content = new stdClass;
 
-        $password=get_config('block_jobonline','feedpassword');
-        $url=get_config('block_jobonline','feedurl');
+        $password=get_config('block_jobonlinesecondary','feedpassword');
+        $url=get_config('block_jobonlinesecondary','feedurl');
 
         if(empty($password) or empty($url))
         {
-            $this->content->text = get_string('notsetup','block_jobonline');
+            $this->content->text = get_string('notsetup','block_jobonlinesecondary');
         }
         else
         {
@@ -710,8 +710,8 @@ class block_jobonline extends block_base {
         global $PAGE;
         parent::get_required_javascript();
 
-        $PAGE->requires->js('/blocks/jobonline/js/block_jobonline.js');
-        $PAGE->requires->js_init_call('M.block_jobonline.init');
+        $PAGE->requires->js('/blocks/jobonlinesecondary/js/block_jobonlinesecondary.js');
+        $PAGE->requires->js_init_call('M.block_jobonlinesecondary.init');
     }
 
     /**

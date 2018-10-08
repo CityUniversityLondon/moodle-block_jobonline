@@ -2,15 +2,15 @@
 /**
  * Version details
  *
- * @package    jobonline
+ * @package    jobonlinesecondary
  * @copyright  2018 onwards University of London
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname']='JobOnline Block';
-$string['pluginnameplural'] = 'JobOnline Blocks';
+$string['pluginname']='Jobonline Secondary Feed Block';
+$string['pluginnameplural'] = 'Jobonline Secondary Feed Blocks';
 
 $string['bounce']='Bounce block into centre';
 $string['bounce_description']='If selected, the block will force its way into the main content part of any page it appears on. When not selected, it acts like any other block in the current theme.';
@@ -45,5 +45,5 @@ $string['applicationlinkname']='Click here to apply (opens new window)';
 $string['ending-sort']='Closing Soon';
 $string['post-sort']='Newly listed';
 
-$string['general_cron']='JobOnline Feed Refresh';
-$string['notsetup']='JobOnline not configured, check <a href="/admin/settings.php?section=blocksettingjobonline">url and/or password settings</a>.';
+$string['general_cron']='Jobonline Secondary Feed Refresh';
+$string['notsetup']='Jobonline Secondary Feed not configured, check <a href="/admin/settings.php?section=blocksettingjobonlinesecondary">url and/or password settings</a>.';
