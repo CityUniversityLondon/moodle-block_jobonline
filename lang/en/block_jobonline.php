@@ -1,6 +1,6 @@
 <?php
 /**
- * Version details
+ * Language strings
  *
  * @package    jobonline
  * @copyright  2018 onwards University of London
@@ -47,3 +47,5 @@ $string['post-sort']='Newly listed';
 
 $string['general_cron']='JobOnline Feed Refresh';
 $string['notsetup']='JobOnline not configured, check <a href="/admin/settings.php?section=blocksettingjobonline">url and/or password settings</a>.';
+
+$string['privacy:metadata'] = 'The JobOnline block only displays data from an external feed.';
