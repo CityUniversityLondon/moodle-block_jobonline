@@ -24,6 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2018040602;        // The current plugin version (Date: YYYYMMDDXX)
+$plugin->version   = 2019081201;        // The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2016112900;        // Requires this Moodle version
 $plugin->component = 'block_jobonline'; // Full name of the plugin (used for diagnostics)
