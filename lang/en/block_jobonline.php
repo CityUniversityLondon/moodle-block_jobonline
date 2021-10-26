@@ -49,3 +49,5 @@ $string['general_cron']='JobOnline Feed Refresh';
 $string['notsetup']='JobOnline not configured, check <a href="/admin/settings.php?section=blocksettingjobonline">url and/or password settings</a>.';
 
 $string['privacy:metadata'] = 'The JobOnline block only displays data from an external feed.';
+$string['jobonline:addinstance'] = 'Add a new Jobs Online block';
+$string['jobonline:myaddinstance'] = 'Add a new Jobs Online block to the my Moodle page';
